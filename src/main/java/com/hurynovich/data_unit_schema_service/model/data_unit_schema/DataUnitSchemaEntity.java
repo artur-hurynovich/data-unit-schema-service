@@ -2,6 +2,8 @@ package com.hurynovich.data_unit_schema_service.model.data_unit_schema;
 
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaEntity;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,6 +30,7 @@ public class DataUnitSchemaEntity implements DataUnitSchemaPersistentModel {
             orphanRemoval = true,
             targetEntity = DataUnitPropertySchemaEntity.class)
     @JoinColumn(name = "data_unit_schema_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<DataUnitPropertySchemaPersistentModel> propertySchemas;
 
     @Override
