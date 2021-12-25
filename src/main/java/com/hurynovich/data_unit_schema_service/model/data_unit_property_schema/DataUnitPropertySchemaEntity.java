@@ -25,6 +25,9 @@ public class DataUnitPropertySchemaEntity implements DataUnitPropertySchemaPersi
     @Enumerated(EnumType.STRING)
     private DataUnitPropertyType type;
 
+    @Column(name = "data_unit_schema_id", insertable = false, updatable = false)
+    private Long dataUnitSchemaId;
+
     @Override
     public Long getId() {
         return id;
@@ -50,5 +53,13 @@ public class DataUnitPropertySchemaEntity implements DataUnitPropertySchemaPersi
 
     public void setType(final DataUnitPropertyType type) {
         this.type = type;
+    }
+
+    public Long getDataUnitSchemaId() {
+        return dataUnitSchemaId;
+    }
+
+    public void setDataUnitSchemaId(final Long dataUnitSchemaId) {
+        this.dataUnitSchemaId = dataUnitSchemaId;
     }
 }
