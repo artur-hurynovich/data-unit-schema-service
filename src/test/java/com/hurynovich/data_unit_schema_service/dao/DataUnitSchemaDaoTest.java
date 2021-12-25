@@ -2,12 +2,14 @@ package com.hurynovich.data_unit_schema_service.dao;
 
 import com.hurynovich.data_unit_schema_service.DataUnitSchemaServiceApplication;
 import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model_asserter.ModelAsserter;
 import com.hurynovich.data_unit_schema_service.model_asserter.impl.DataUnitSchemaAsserter;
 import com.hurynovich.data_unit_schema_service.model_generator.ModelGenerator;
-import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSchemaGenerator;
+import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSchemaPersistentModelGenerator;
 import com.hurynovich.data_unit_schema_service.test_dao.TestDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -23,9 +25,9 @@ import static com.hurynovich.data_unit_schema_service.model_generator.ModelConst
 public class DataUnitSchemaDaoTest {
 
     private final ModelGenerator<DataUnitSchemaPersistentModel> schemaGenerator =
-            new DataUnitSchemaGenerator();
+            new DataUnitSchemaPersistentModelGenerator();
 
-    private final ModelAsserter<DataUnitSchemaPersistentModel> schemaAsserter =
+    private final ModelAsserter<DataUnitSchemaApiModel, DataUnitSchemaServiceModel, DataUnitSchemaPersistentModel> schemaAsserter =
             new DataUnitSchemaAsserter();
 
     @Autowired

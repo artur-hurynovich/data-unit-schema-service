@@ -8,5 +8,7 @@ public interface ModelGenerator<T extends Identified<?>> {
 
     T generateWithNullId();
 
+    T generate();
+
     List<T> generateListWithNullIds();
 }

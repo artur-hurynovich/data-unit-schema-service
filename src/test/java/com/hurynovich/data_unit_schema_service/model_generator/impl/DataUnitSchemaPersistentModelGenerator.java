@@ -10,12 +10,16 @@ import com.hurynovich.data_unit_schema_service.model_generator.ModelGenerator;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_BOOLEAN_PROPERTY_SCHEMA_ID;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_BOOLEAN_PROPERTY_SCHEMA_NAME;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_BOOLEAN_PROPERTY_SCHEMA_TYPE;
+import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_DATE_PROPERTY_SCHEMA_ID;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_DATE_PROPERTY_SCHEMA_NAME;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_DATE_PROPERTY_SCHEMA_TYPE;
+import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_FLOAT_PROPERTY_SCHEMA_ID;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_FLOAT_PROPERTY_SCHEMA_NAME;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_FLOAT_PROPERTY_SCHEMA_TYPE;
+import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_INTEGER_PROPERTY_SCHEMA_ID;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_INTEGER_PROPERTY_SCHEMA_NAME;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_INTEGER_PROPERTY_SCHEMA_TYPE;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_SCHEMA_ID_1;
@@ -24,12 +28,14 @@ import static com.hurynovich.data_unit_schema_service.model_generator.ModelConst
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_SCHEMA_NAME_1;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_SCHEMA_NAME_2;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_SCHEMA_NAME_3;
+import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_TEXT_PROPERTY_SCHEMA_ID;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_TEXT_PROPERTY_SCHEMA_NAME;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_TEXT_PROPERTY_SCHEMA_TYPE;
+import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_TIME_PROPERTY_SCHEMA_ID;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_TIME_PROPERTY_SCHEMA_NAME;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_TIME_PROPERTY_SCHEMA_TYPE;
 
-public class DataUnitSchemaGenerator implements ModelGenerator<DataUnitSchemaPersistentModel> {
+public class DataUnitSchemaPersistentModelGenerator implements ModelGenerator<DataUnitSchemaPersistentModel> {
 
     @Override
     public DataUnitSchemaPersistentModel generateWithNullId() {
@@ -72,6 +78,35 @@ public class DataUnitSchemaGenerator implements ModelGenerator<DataUnitSchemaPer
         propertySchema.setType(type);
 
         return propertySchema;
+    }
+
+    @Override
+    public DataUnitSchemaPersistentModel generate() {
+        return processGenerate(DATA_UNIT_SCHEMA_ID_1, DATA_UNIT_SCHEMA_NAME_1, generatePropertySchemas());
+    }
+
+    private List<DataUnitPropertySchemaPersistentModel> generatePropertySchemas() {
+        final DataUnitPropertySchemaPersistentModel propertySchema1 = processGeneratePropertySchema(
+                DATA_UNIT_TEXT_PROPERTY_SCHEMA_ID, DATA_UNIT_TEXT_PROPERTY_SCHEMA_NAME,
+                DATA_UNIT_TEXT_PROPERTY_SCHEMA_TYPE);
+        final DataUnitPropertySchemaPersistentModel propertySchema2 = processGeneratePropertySchema(
+                DATA_UNIT_INTEGER_PROPERTY_SCHEMA_ID, DATA_UNIT_INTEGER_PROPERTY_SCHEMA_NAME,
+                DATA_UNIT_INTEGER_PROPERTY_SCHEMA_TYPE);
+        final DataUnitPropertySchemaPersistentModel propertySchema3 = processGeneratePropertySchema(
+                DATA_UNIT_FLOAT_PROPERTY_SCHEMA_ID, DATA_UNIT_FLOAT_PROPERTY_SCHEMA_NAME,
+                DATA_UNIT_FLOAT_PROPERTY_SCHEMA_TYPE);
+        final DataUnitPropertySchemaPersistentModel propertySchema4 = processGeneratePropertySchema(
+                DATA_UNIT_BOOLEAN_PROPERTY_SCHEMA_ID, DATA_UNIT_BOOLEAN_PROPERTY_SCHEMA_NAME,
+                DATA_UNIT_BOOLEAN_PROPERTY_SCHEMA_TYPE);
+        final DataUnitPropertySchemaPersistentModel propertySchema5 = processGeneratePropertySchema(
+                DATA_UNIT_DATE_PROPERTY_SCHEMA_ID, DATA_UNIT_DATE_PROPERTY_SCHEMA_NAME,
+                DATA_UNIT_DATE_PROPERTY_SCHEMA_TYPE);
+        final DataUnitPropertySchemaPersistentModel propertySchema6 = processGeneratePropertySchema(
+                DATA_UNIT_TIME_PROPERTY_SCHEMA_ID, DATA_UNIT_TIME_PROPERTY_SCHEMA_NAME,
+                DATA_UNIT_TIME_PROPERTY_SCHEMA_TYPE);
+
+        return Arrays.asList(propertySchema1, propertySchema2, propertySchema3, propertySchema4,
+                propertySchema5, propertySchema6);
     }
 
     @Override
