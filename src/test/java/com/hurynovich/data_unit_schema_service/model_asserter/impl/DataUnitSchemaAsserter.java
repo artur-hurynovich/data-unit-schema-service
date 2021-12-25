@@ -1,6 +1,7 @@
 package com.hurynovich.data_unit_schema_service.model_asserter.impl;
 
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model_asserter.ModelAsserter;
 import org.junit.jupiter.api.Assertions;
@@ -15,15 +16,15 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaPersi
                              final DataUnitSchemaPersistentModel actual,
                              final String... ignoreProperties) {
         final Set<String> ignorePropertiesSet = Set.of(ignoreProperties);
-        if (!ignorePropertiesSet.contains("id")) {
+        if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.ID)) {
             Assertions.assertEquals(expected.getId(), actual.getId());
         }
 
-        if (!ignorePropertiesSet.contains("name")) {
+        if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.NAME)) {
             Assertions.assertEquals(expected.getName(), actual.getName());
         }
 
-        if (!ignorePropertiesSet.contains("propertySchemas")) {
+        if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.PROPERTY_SCHEMAS)) {
             final List<DataUnitPropertySchemaPersistentModel> expectedPropertySchemas = expected.getPropertySchemas();
             final List<DataUnitPropertySchemaPersistentModel> actualPropertySchemas = actual.getPropertySchemas();
             Assertions.assertEquals(expectedPropertySchemas.size(), actualPropertySchemas.size());

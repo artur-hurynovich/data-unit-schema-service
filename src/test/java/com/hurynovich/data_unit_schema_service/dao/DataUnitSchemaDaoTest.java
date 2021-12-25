@@ -2,6 +2,7 @@ package com.hurynovich.data_unit_schema_service.dao;
 
 import com.hurynovich.data_unit_schema_service.DataUnitSchemaServiceApplication;
 import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model_asserter.ModelAsserter;
 import com.hurynovich.data_unit_schema_service.model_asserter.impl.DataUnitSchemaAsserter;
@@ -39,7 +40,7 @@ public class DataUnitSchemaDaoTest {
         final DataUnitSchemaPersistentModel savedSchema = dao.save(schema).block();
         Assertions.assertNotNull(savedSchema);
 
-        schemaAsserter.assertEquals(schema, savedSchema, "id");
+        schemaAsserter.assertEquals(schema, savedSchema, DataUnitSchemaEntity_.ID);
 
         Assertions.assertNotNull(savedSchema.getId());
     }
@@ -69,14 +70,14 @@ public class DataUnitSchemaDaoTest {
         Assertions.assertNotNull(schemas1);
         Assertions.assertEquals(2, schemas1.size());
 
-        schemaAsserter.assertEquals(existingSchemas.get(0), schemas1.get(0), "propertySchemas");
-        schemaAsserter.assertEquals(existingSchemas.get(1), schemas1.get(1), "propertySchemas");
+        schemaAsserter.assertEquals(existingSchemas.get(0), schemas1.get(0), DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
+        schemaAsserter.assertEquals(existingSchemas.get(1), schemas1.get(1), DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
 
         final List<DataUnitSchemaPersistentModel> schemas2 = dao.findAll(new PaginationParams(2, 2)).block();
         Assertions.assertNotNull(schemas2);
         Assertions.assertEquals(1, schemas2.size());
 
-        schemaAsserter.assertEquals(existingSchemas.get(2), schemas2.get(0), "propertySchemas");
+        schemaAsserter.assertEquals(existingSchemas.get(2), schemas2.get(0), DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
     }
 
     @Test

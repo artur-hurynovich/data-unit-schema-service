@@ -2,7 +2,9 @@ package com.hurynovich.data_unit_schema_service.dao.impl;
 
 import com.hurynovich.data_unit_schema_service.dao.DataUnitSchemaDao;
 import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
+import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaEntity_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity;
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import io.smallrye.mutiny.converters.uni.UniReactorConverters;
 import org.hibernate.reactive.mutiny.Mutiny;
@@ -42,9 +44,11 @@ public class DataUnitSchemaDaoImpl implements DataUnitSchemaDao {
                     final CriteriaQuery<DataUnitSchemaEntity> criteriaQuery = criteriaBuilder
                             .createQuery(DataUnitSchemaEntity.class);
                     final Root<DataUnitSchemaEntity> root = criteriaQuery.from(DataUnitSchemaEntity.class);
-                    root.fetch("propertySchemas", JoinType.LEFT);
+                    root.fetch(DataUnitSchemaEntity_.PROPERTY_SCHEMAS, JoinType.LEFT);
                     criteriaQuery
-                            .where(criteriaBuilder.equal(root.join("propertySchemas").get("dataUnitSchemaId"), id))
+                            .where(criteriaBuilder.equal(
+                                    root.join(DataUnitSchemaEntity_.PROPERTY_SCHEMAS)
+                                            .get(DataUnitPropertySchemaEntity_.DATA_UNIT_SCHEMA_ID), id))
                             .distinct(true);
 
                     return session.createQuery(criteriaQuery).getSingleResultOrNull();
