@@ -28,6 +28,15 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
     }
 
     @Override
+    public void assertEquals(final DataUnitSchemaServiceModel expected,
+                             final DataUnitSchemaServiceModel actual,
+                             final String... ignoreProperties) {
+        processAssertEquals(DataUnitSchemaWrapper.of(expected, ignoreProperties),
+                DataUnitSchemaWrapper.of(actual, ignoreProperties),
+                ignoreProperties);
+    }
+
+    @Override
     public void assertEquals(final DataUnitSchemaApiModel expected,
                              final DataUnitSchemaServiceModel actual,
                              final String... ignoreProperties) {
