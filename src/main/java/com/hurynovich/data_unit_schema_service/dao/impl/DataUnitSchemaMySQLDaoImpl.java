@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class DataUnitSchemaMySQLDaoImpl implements DataUnitSchemaDao {
+class DataUnitSchemaMySQLDaoImpl implements DataUnitSchemaDao {
 
     private final Mutiny.SessionFactory sessionFactory;
 

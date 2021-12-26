@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @Service
-public class DataUnitSchemaServiceImpl implements DataUnitSchemaService {
+class DataUnitSchemaServiceImpl implements DataUnitSchemaService {
 
     private final DataUnitSchemaDao dao;
 

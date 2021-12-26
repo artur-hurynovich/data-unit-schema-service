@@ -24,7 +24,7 @@ import java.util.List;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_SCHEMA_ID_1;
 
 @SpringBootTest(classes = DataUnitSchemaServiceApplication.class)
-public class DataUnitSchemaMySQLDaoTest {
+class DataUnitSchemaMySQLDaoTest {
 
     private static final String UPDATED_SCHEMA_NAME = "UPD";
 
@@ -41,7 +41,7 @@ public class DataUnitSchemaMySQLDaoTest {
     private DataUnitSchemaDao dao;
 
     @Test
-    public void saveNewSchemaTest() {
+    void saveNewSchemaTest() {
         final DataUnitSchemaPersistentModel schema = schemaGenerator.generateWithNullId();
         final DataUnitSchemaPersistentModel savedSchema = dao.save(Mono.just(schema)).block();
         Assertions.assertNotNull(savedSchema);
@@ -52,7 +52,7 @@ public class DataUnitSchemaMySQLDaoTest {
     }
 
     @Test
-    public void updateExistingSchemaTest() {
+    void updateExistingSchemaTest() {
         final DataUnitSchemaEntity existingSchema = (DataUnitSchemaEntity) testDao
                 .save(schemaGenerator.generateWithNullId());
         existingSchema.setName(UPDATED_SCHEMA_NAME);
@@ -63,7 +63,7 @@ public class DataUnitSchemaMySQLDaoTest {
     }
 
     @Test
-    public void findByIdTest() {
+    void findByIdTest() {
         final DataUnitSchemaPersistentModel existingSchema = testDao.save(schemaGenerator.generateWithNullId());
         final DataUnitSchemaPersistentModel schema = dao.findById(Mono.just(existingSchema.getId())).block();
         Assertions.assertNotNull(schema);
@@ -72,13 +72,13 @@ public class DataUnitSchemaMySQLDaoTest {
     }
 
     @Test
-    public void findByIdEmptyTest() {
+    void findByIdEmptyTest() {
         final DataUnitSchemaPersistentModel schema = dao.findById(Mono.just(DATA_UNIT_SCHEMA_ID_1)).block();
         Assertions.assertNull(schema);
     }
 
     @Test
-    public void findAllTest() {
+    void findAllTest() {
         final List<DataUnitSchemaPersistentModel> existingSchemas = schemaGenerator.generateListWithNullIds()
                 .stream()
                 .map(testDao::save)
@@ -100,7 +100,7 @@ public class DataUnitSchemaMySQLDaoTest {
     }
 
     @Test
-    public void findAllEmptyTest() {
+    void findAllEmptyTest() {
         final List<DataUnitSchemaPersistentModel> schemas = dao
                 .findAll(Mono.just(new PaginationParams(0, 2))).block();
         Assertions.assertNotNull(schemas);
@@ -108,7 +108,7 @@ public class DataUnitSchemaMySQLDaoTest {
     }
 
     @Test
-    public void deleteByIdTest() {
+    void deleteByIdTest() {
         final DataUnitSchemaPersistentModel existingSchema = testDao.save(schemaGenerator.generateWithNullId());
         final Long id = existingSchema.getId();
         Assertions.assertNull(dao.deleteById(Mono.just(id)).block());
@@ -117,7 +117,7 @@ public class DataUnitSchemaMySQLDaoTest {
     }
 
     @Test
-    public void countTest() {
+    void countTest() {
         final List<DataUnitSchemaPersistentModel> existingSchemas = schemaGenerator.generateListWithNullIds()
                 .stream()
                 .map(testDao::save)
@@ -126,7 +126,7 @@ public class DataUnitSchemaMySQLDaoTest {
     }
 
     @AfterEach
-    public void clear() {
+    void clear() {
         testDao.deleteAll();
     }
 }

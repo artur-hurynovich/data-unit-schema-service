@@ -12,7 +12,7 @@ import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSche
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DataUnitSchemaApiConverterTest {
+class DataUnitSchemaApiConverterTest {
 
     private final ApiConverter<DataUnitSchemaApiModel, DataUnitSchemaServiceModel> converter =
             new DataUnitSchemaApiConverter();

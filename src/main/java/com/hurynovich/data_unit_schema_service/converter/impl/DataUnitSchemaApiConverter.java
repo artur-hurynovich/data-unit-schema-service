@@ -14,7 +14,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DataUnitSchemaApiConverter implements ApiConverter<DataUnitSchemaApiModel, DataUnitSchemaServiceModel> {
+class DataUnitSchemaApiConverter implements ApiConverter<DataUnitSchemaApiModel, DataUnitSchemaServiceModel> {
 
     @Override
     public DataUnitSchemaServiceModel convert(@Nullable final DataUnitSchemaApiModel source) {

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Repository
 @Transactional
-public class DataUnitSchemaTestDao implements TestDao<DataUnitSchemaPersistentModel, Long> {
+class DataUnitSchemaTestDao implements TestDao<DataUnitSchemaPersistentModel, Long> {
 
     private static final String ENTITY_GRAPH_KEY = "javax.persistence.fetchgraph";
 
