@@ -55,7 +55,7 @@ public class DataUnitSchemaMySQLDaoImpl implements DataUnitSchemaDao {
                 })
                 .convert()
                 .with(UniReactorConverters.toMono())
-                .map(DataUnitSchemaPersistentModel.class::cast);
+                .flatMap(schema -> Mono.justOrEmpty((DataUnitSchemaPersistentModel) schema));
     }
 
     @Override
@@ -75,9 +75,9 @@ public class DataUnitSchemaMySQLDaoImpl implements DataUnitSchemaDao {
                 })
                 .convert()
                 .with(UniReactorConverters.toMono())
-                .map(schemas -> schemas.stream()
+                .flatMap(schemas -> Mono.just(schemas.stream()
                         .map(DataUnitSchemaPersistentModel.class::cast)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList())));
     }
 
     @Override
