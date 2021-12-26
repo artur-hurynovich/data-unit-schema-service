@@ -107,7 +107,7 @@ public class DataUnitSchemaMySQLDaoTest {
     public void deleteByIdTest() {
         final DataUnitSchemaPersistentModel existingSchema = testDao.save(schemaGenerator.generateWithNullId());
         final Long id = existingSchema.getId();
-        dao.deleteById(id).block();
+        Assertions.assertNull(dao.deleteById(id).block());
 
         Assertions.assertNull(testDao.findById(id));
     }
