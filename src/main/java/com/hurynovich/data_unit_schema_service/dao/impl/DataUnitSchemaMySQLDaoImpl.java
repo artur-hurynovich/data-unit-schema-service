@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class DataUnitSchemaDaoImpl implements DataUnitSchemaDao {
+public class DataUnitSchemaMySQLDaoImpl implements DataUnitSchemaDao {
 
     private final Mutiny.SessionFactory sessionFactory;
 
-    public DataUnitSchemaDaoImpl(@NonNull final Mutiny.SessionFactory sessionFactory) {
+    public DataUnitSchemaMySQLDaoImpl(@NonNull final Mutiny.SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -81,9 +81,9 @@ public class DataUnitSchemaDaoImpl implements DataUnitSchemaDao {
     }
 
     @Override
-    public Mono<Void> delete(@NonNull final DataUnitSchemaPersistentModel schema) {
+    public Mono<Void> deleteById(@NonNull final Long id) {
         return sessionFactory
-                .withTransaction(session -> session.find(DataUnitSchemaEntity.class, schema.getId())
+                .withTransaction(session -> session.find(DataUnitSchemaEntity.class, id)
                         .onItem()
                         .ifNotNull()
                         .transformToUni(session::remove))

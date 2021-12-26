@@ -22,7 +22,7 @@ import java.util.List;
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_SCHEMA_ID_1;
 
 @SpringBootTest(classes = DataUnitSchemaServiceApplication.class)
-public class DataUnitSchemaDaoTest {
+public class DataUnitSchemaMySQLDaoTest {
 
     private final ModelGenerator<DataUnitSchemaPersistentModel> schemaGenerator =
             new DataUnitSchemaPersistentModelGenerator();
@@ -85,9 +85,10 @@ public class DataUnitSchemaDaoTest {
     @Test
     public void deleteByIdTest() {
         final DataUnitSchemaPersistentModel existingSchema = testDao.save(schemaGenerator.generateWithNullId());
-        dao.delete(existingSchema).block();
+        final Long id = existingSchema.getId();
+        dao.deleteById(id).block();
 
-        Assertions.assertNull(testDao.findById(existingSchema.getId()));
+        Assertions.assertNull(testDao.findById(id));
     }
 
     @Test

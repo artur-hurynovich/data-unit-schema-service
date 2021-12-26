@@ -15,7 +15,7 @@ public interface DataUnitSchemaDao {
 
     Mono<List<DataUnitSchemaPersistentModel>> findAll(@NonNull PaginationParams params);
 
-    Mono<Void> delete(@NonNull DataUnitSchemaPersistentModel schema);
+    Mono<Void> deleteById(@NonNull Long id);
 
     Mono<Long> count();
 }
