@@ -11,4 +11,6 @@ public interface ModelGenerator<T extends Identified<?>> {
     T generate();
 
     List<T> generateListWithNullIds();
+
+    List<T> generateList();
 }

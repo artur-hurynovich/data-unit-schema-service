@@ -111,12 +111,24 @@ public class DataUnitSchemaPersistentModelGenerator implements ModelGenerator<Da
 
     @Override
     public List<DataUnitSchemaPersistentModel> generateListWithNullIds() {
-        final DataUnitSchemaPersistentModel schema1 = processGenerate(DATA_UNIT_SCHEMA_ID_1,
+        final DataUnitSchemaPersistentModel schema1 = processGenerate(null,
                 DATA_UNIT_SCHEMA_NAME_1, generatePropertySchemasWithNullIds());
-        final DataUnitSchemaPersistentModel schema2 = processGenerate(DATA_UNIT_SCHEMA_ID_2,
+        final DataUnitSchemaPersistentModel schema2 = processGenerate(null,
                 DATA_UNIT_SCHEMA_NAME_2, generatePropertySchemasWithNullIds());
-        final DataUnitSchemaPersistentModel schema3 = processGenerate(DATA_UNIT_SCHEMA_ID_3,
+        final DataUnitSchemaPersistentModel schema3 = processGenerate(null,
                 DATA_UNIT_SCHEMA_NAME_3, generatePropertySchemasWithNullIds());
+
+        return Arrays.asList(schema1, schema2, schema3);
+    }
+
+    @Override
+    public List<DataUnitSchemaPersistentModel> generateList() {
+        final DataUnitSchemaPersistentModel schema1 = processGenerate(DATA_UNIT_SCHEMA_ID_1,
+                DATA_UNIT_SCHEMA_NAME_1, generatePropertySchemas());
+        final DataUnitSchemaPersistentModel schema2 = processGenerate(DATA_UNIT_SCHEMA_ID_2,
+                DATA_UNIT_SCHEMA_NAME_2, generatePropertySchemas());
+        final DataUnitSchemaPersistentModel schema3 = processGenerate(DATA_UNIT_SCHEMA_ID_3,
+                DATA_UNIT_SCHEMA_NAME_3, generatePropertySchemas());
 
         return Arrays.asList(schema1, schema2, schema3);
     }

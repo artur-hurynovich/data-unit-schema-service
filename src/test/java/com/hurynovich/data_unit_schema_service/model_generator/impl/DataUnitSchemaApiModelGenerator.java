@@ -101,12 +101,24 @@ public class DataUnitSchemaApiModelGenerator implements ModelGenerator<DataUnitS
 
     @Override
     public List<DataUnitSchemaApiModel> generateListWithNullIds() {
-        final DataUnitSchemaApiModel schema1 = processGenerate(DATA_UNIT_SCHEMA_ID_1,
+        final DataUnitSchemaApiModel schema1 = processGenerate(null,
                 DATA_UNIT_SCHEMA_NAME_1, generatePropertySchemasWithNullIds());
-        final DataUnitSchemaApiModel schema2 = processGenerate(DATA_UNIT_SCHEMA_ID_2,
+        final DataUnitSchemaApiModel schema2 = processGenerate(null,
                 DATA_UNIT_SCHEMA_NAME_2, generatePropertySchemasWithNullIds());
-        final DataUnitSchemaApiModel schema3 = processGenerate(DATA_UNIT_SCHEMA_ID_3,
+        final DataUnitSchemaApiModel schema3 = processGenerate(null,
                 DATA_UNIT_SCHEMA_NAME_3, generatePropertySchemasWithNullIds());
+
+        return Arrays.asList(schema1, schema2, schema3);
+    }
+
+    @Override
+    public List<DataUnitSchemaApiModel> generateList() {
+        final DataUnitSchemaApiModel schema1 = processGenerate(DATA_UNIT_SCHEMA_ID_1,
+                DATA_UNIT_SCHEMA_NAME_1, generatePropertySchemas());
+        final DataUnitSchemaApiModel schema2 = processGenerate(DATA_UNIT_SCHEMA_ID_2,
+                DATA_UNIT_SCHEMA_NAME_2, generatePropertySchemas());
+        final DataUnitSchemaApiModel schema3 = processGenerate(DATA_UNIT_SCHEMA_ID_3,
+                DATA_UNIT_SCHEMA_NAME_3, generatePropertySchemas());
 
         return Arrays.asList(schema1, schema2, schema3);
     }

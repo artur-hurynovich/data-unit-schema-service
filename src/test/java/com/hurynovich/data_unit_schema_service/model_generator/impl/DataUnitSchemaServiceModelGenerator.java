@@ -101,12 +101,24 @@ public class DataUnitSchemaServiceModelGenerator implements ModelGenerator<DataU
 
     @Override
     public List<DataUnitSchemaServiceModel> generateListWithNullIds() {
-        final DataUnitSchemaServiceModel schema1 = processGenerate(DATA_UNIT_SCHEMA_ID_1,
+        final DataUnitSchemaServiceModel schema1 = processGenerate(null,
                 DATA_UNIT_SCHEMA_NAME_1, generatePropertySchemasWithNullIds());
-        final DataUnitSchemaServiceModel schema2 = processGenerate(DATA_UNIT_SCHEMA_ID_2,
+        final DataUnitSchemaServiceModel schema2 = processGenerate(null,
                 DATA_UNIT_SCHEMA_NAME_2, generatePropertySchemasWithNullIds());
-        final DataUnitSchemaServiceModel schema3 = processGenerate(DATA_UNIT_SCHEMA_ID_3,
+        final DataUnitSchemaServiceModel schema3 = processGenerate(null,
                 DATA_UNIT_SCHEMA_NAME_3, generatePropertySchemasWithNullIds());
+
+        return Arrays.asList(schema1, schema2, schema3);
+    }
+
+    @Override
+    public List<DataUnitSchemaServiceModel> generateList() {
+        final DataUnitSchemaServiceModel schema1 = processGenerate(DATA_UNIT_SCHEMA_ID_1,
+                DATA_UNIT_SCHEMA_NAME_1, generatePropertySchemas());
+        final DataUnitSchemaServiceModel schema2 = processGenerate(DATA_UNIT_SCHEMA_ID_2,
+                DATA_UNIT_SCHEMA_NAME_2, generatePropertySchemas());
+        final DataUnitSchemaServiceModel schema3 = processGenerate(DATA_UNIT_SCHEMA_ID_3,
+                DATA_UNIT_SCHEMA_NAME_3, generatePropertySchemas());
 
         return Arrays.asList(schema1, schema2, schema3);
     }
