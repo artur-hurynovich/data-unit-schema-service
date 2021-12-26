@@ -97,6 +97,13 @@ public class DataUnitSchemaMySQLDaoTest {
     }
 
     @Test
+    public void findAllEmptyTest() {
+        final List<DataUnitSchemaPersistentModel> schemas = dao.findAll(new PaginationParams(0, 2)).block();
+        Assertions.assertNotNull(schemas);
+        Assertions.assertTrue(schemas.isEmpty());
+    }
+
+    @Test
     public void deleteByIdTest() {
         final DataUnitSchemaPersistentModel existingSchema = testDao.save(schemaGenerator.generateWithNullId());
         final Long id = existingSchema.getId();
