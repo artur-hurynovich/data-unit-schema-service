@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class DataUnitSchemaMySQLDaoTest {
     @Test
     public void saveNewSchemaTest() {
         final DataUnitSchemaPersistentModel schema = schemaGenerator.generateWithNullId();
-        final DataUnitSchemaPersistentModel savedSchema = dao.save(schema).block();
+        final DataUnitSchemaPersistentModel savedSchema = dao.save(Mono.just(schema)).block();
         Assertions.assertNotNull(savedSchema);
 
         schemaAsserter.assertEquals(schema, savedSchema, DataUnitSchemaEntity_.ID);
@@ -55,7 +56,7 @@ public class DataUnitSchemaMySQLDaoTest {
         final DataUnitSchemaEntity existingSchema = (DataUnitSchemaEntity) testDao
                 .save(schemaGenerator.generateWithNullId());
         existingSchema.setName(UPDATED_SCHEMA_NAME);
-        final DataUnitSchemaPersistentModel updatedSchema = dao.save(existingSchema).block();
+        final DataUnitSchemaPersistentModel updatedSchema = dao.save(Mono.just(existingSchema)).block();
         Assertions.assertNotNull(updatedSchema);
 
         schemaAsserter.assertEquals(existingSchema, updatedSchema);
@@ -64,7 +65,7 @@ public class DataUnitSchemaMySQLDaoTest {
     @Test
     public void findByIdTest() {
         final DataUnitSchemaPersistentModel existingSchema = testDao.save(schemaGenerator.generateWithNullId());
-        final DataUnitSchemaPersistentModel schema = dao.findById(existingSchema.getId()).block();
+        final DataUnitSchemaPersistentModel schema = dao.findById(Mono.just(existingSchema.getId())).block();
         Assertions.assertNotNull(schema);
 
         schemaAsserter.assertEquals(existingSchema, schema);
@@ -72,7 +73,7 @@ public class DataUnitSchemaMySQLDaoTest {
 
     @Test
     public void findByIdEmptyTest() {
-        final DataUnitSchemaPersistentModel schema = dao.findById(DATA_UNIT_SCHEMA_ID_1).block();
+        final DataUnitSchemaPersistentModel schema = dao.findById(Mono.just(DATA_UNIT_SCHEMA_ID_1)).block();
         Assertions.assertNull(schema);
     }
 
@@ -82,14 +83,16 @@ public class DataUnitSchemaMySQLDaoTest {
                 .stream()
                 .map(testDao::save)
                 .toList();
-        final List<DataUnitSchemaPersistentModel> schemas1 = dao.findAll(new PaginationParams(0, 2)).block();
+        final List<DataUnitSchemaPersistentModel> schemas1 = dao
+                .findAll(Mono.just(new PaginationParams(0, 2))).block();
         Assertions.assertNotNull(schemas1);
         Assertions.assertEquals(2, schemas1.size());
 
         schemaAsserter.assertEquals(existingSchemas.get(0), schemas1.get(0), DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
         schemaAsserter.assertEquals(existingSchemas.get(1), schemas1.get(1), DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
 
-        final List<DataUnitSchemaPersistentModel> schemas2 = dao.findAll(new PaginationParams(2, 2)).block();
+        final List<DataUnitSchemaPersistentModel> schemas2 = dao
+                .findAll(Mono.just(new PaginationParams(2, 2))).block();
         Assertions.assertNotNull(schemas2);
         Assertions.assertEquals(1, schemas2.size());
 
@@ -98,7 +101,8 @@ public class DataUnitSchemaMySQLDaoTest {
 
     @Test
     public void findAllEmptyTest() {
-        final List<DataUnitSchemaPersistentModel> schemas = dao.findAll(new PaginationParams(0, 2)).block();
+        final List<DataUnitSchemaPersistentModel> schemas = dao
+                .findAll(Mono.just(new PaginationParams(0, 2))).block();
         Assertions.assertNotNull(schemas);
         Assertions.assertTrue(schemas.isEmpty());
     }
@@ -107,7 +111,7 @@ public class DataUnitSchemaMySQLDaoTest {
     public void deleteByIdTest() {
         final DataUnitSchemaPersistentModel existingSchema = testDao.save(schemaGenerator.generateWithNullId());
         final Long id = existingSchema.getId();
-        Assertions.assertNull(dao.deleteById(id).block());
+        Assertions.assertNull(dao.deleteById(Mono.just(id)).block());
 
         Assertions.assertNull(testDao.findById(id));
     }

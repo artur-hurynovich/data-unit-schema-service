@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface DataUnitSchemaService {
 
-    Mono<DataUnitSchemaServiceModel> save(@NonNull DataUnitSchemaServiceModel schema);
+    Mono<DataUnitSchemaServiceModel> save(@NonNull Mono<DataUnitSchemaServiceModel> schema);
 
-    Mono<DataUnitSchemaServiceModel> findById(@NonNull Long id);
+    Mono<DataUnitSchemaServiceModel> findById(@NonNull Mono<Long> id);
 
-    Mono<List<DataUnitSchemaServiceModel>> findAll(@NonNull PaginationParams params);
+    Mono<List<DataUnitSchemaServiceModel>> findAll(@NonNull Mono<PaginationParams> params);
 
-    Mono<Void> deleteById(@NonNull Long id);
+    Mono<Void> deleteById(@NonNull Mono<Long> id);
 }

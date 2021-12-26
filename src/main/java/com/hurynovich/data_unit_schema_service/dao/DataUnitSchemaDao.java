@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface DataUnitSchemaDao {
 
-    Mono<DataUnitSchemaPersistentModel> save(@NonNull DataUnitSchemaPersistentModel schema);
+    Mono<DataUnitSchemaPersistentModel> save(@NonNull Mono<DataUnitSchemaPersistentModel> schema);
 
-    Mono<DataUnitSchemaPersistentModel> findById(@NonNull Long id);
+    Mono<DataUnitSchemaPersistentModel> findById(@NonNull Mono<Long> id);
 
-    Mono<List<DataUnitSchemaPersistentModel>> findAll(@NonNull PaginationParams params);
+    Mono<List<DataUnitSchemaPersistentModel>> findAll(@NonNull Mono<PaginationParams> params);
 
-    Mono<Void> deleteById(@NonNull Long id);
+    Mono<Void> deleteById(@NonNull Mono<Long> id);
 
     Mono<Long> count();
 }
