@@ -3,6 +3,7 @@ package com.hurynovich.data_unit_schema_service.dao;
 import com.hurynovich.data_unit_schema_service.DataUnitSchemaServiceApplication;
 import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
@@ -24,6 +25,8 @@ import static com.hurynovich.data_unit_schema_service.model_generator.ModelConst
 @SpringBootTest(classes = DataUnitSchemaServiceApplication.class)
 public class DataUnitSchemaMySQLDaoTest {
 
+    private static final String UPDATED_SCHEMA_NAME = "UPD";
+
     private final ModelGenerator<DataUnitSchemaPersistentModel> schemaGenerator =
             new DataUnitSchemaPersistentModelGenerator();
 
@@ -37,7 +40,7 @@ public class DataUnitSchemaMySQLDaoTest {
     private DataUnitSchemaDao dao;
 
     @Test
-    public void saveTest() {
+    public void saveNewSchemaTest() {
         final DataUnitSchemaPersistentModel schema = schemaGenerator.generateWithNullId();
         final DataUnitSchemaPersistentModel savedSchema = dao.save(schema).block();
         Assertions.assertNotNull(savedSchema);
@@ -45,6 +48,17 @@ public class DataUnitSchemaMySQLDaoTest {
         schemaAsserter.assertEquals(schema, savedSchema, DataUnitSchemaEntity_.ID);
 
         Assertions.assertNotNull(savedSchema.getId());
+    }
+
+    @Test
+    public void updateExistingSchemaTest() {
+        final DataUnitSchemaEntity existingSchema = (DataUnitSchemaEntity) testDao
+                .save(schemaGenerator.generateWithNullId());
+        existingSchema.setName(UPDATED_SCHEMA_NAME);
+        final DataUnitSchemaPersistentModel updatedSchema = dao.save(existingSchema).block();
+        Assertions.assertNotNull(updatedSchema);
+
+        schemaAsserter.assertEquals(existingSchema, updatedSchema);
     }
 
     @Test
