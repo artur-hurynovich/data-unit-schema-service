@@ -8,5 +8,5 @@ public interface ServiceConverter<T extends ServiceModel<?>, U extends Persisten
 
     U convert(@Nullable T source);
 
-    T convert(@Nullable U source);
+    T convert(@Nullable U source, boolean convertAssociations);
 }

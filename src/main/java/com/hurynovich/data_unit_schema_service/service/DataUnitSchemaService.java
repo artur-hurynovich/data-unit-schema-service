@@ -16,4 +16,6 @@ public interface DataUnitSchemaService {
     Mono<List<DataUnitSchemaServiceModel>> findAll(@NonNull PaginationParams params);
 
     Mono<Void> deleteById(@NonNull Long id);
+
+    Mono<Long> count();
 }
