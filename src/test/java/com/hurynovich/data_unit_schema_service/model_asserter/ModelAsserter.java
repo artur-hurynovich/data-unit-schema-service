@@ -10,6 +10,8 @@ public interface ModelAsserter<A extends ApiModel<?>, S extends ServiceModel<?>,
 
     void assertEquals(S expected, S actual, String... ignoreProperties);
 
+    void assertEquals(A expected, A actual, String... ignoreProperties);
+
     void assertEquals(A expected, S actual, String... ignoreProperties);
 
     void assertEquals(S expected, A actual, String... ignoreProperties);
