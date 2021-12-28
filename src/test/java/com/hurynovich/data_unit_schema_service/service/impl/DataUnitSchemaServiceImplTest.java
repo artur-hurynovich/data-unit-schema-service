@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -58,10 +57,11 @@ class DataUnitSchemaServiceImplTest {
     void saveNewSchemaTest() {
         final DataUnitSchemaServiceModel serviceModel = serviceModelGenerator.generateWithNullId();
         final DataUnitSchemaPersistentModel persistentModel = persistentModelGenerator.generateWithNullId();
-        Mockito.when(dao.save(ArgumentMatchers.any())).thenReturn(Mono.just(persistentModel));
+        Mockito.when(converter.convert(serviceModel)).thenReturn(persistentModel);
+        Mockito.when(dao.save(persistentModel)).thenReturn(Mono.just(persistentModel));
         Mockito.when(converter.convert(persistentModel)).thenReturn(serviceModelGenerator.generate());
 
-        final DataUnitSchemaServiceModel savedSchema = service.save(Mono.just(serviceModel)).block();
+        final DataUnitSchemaServiceModel savedSchema = service.save(serviceModel).block();
         Assertions.assertNotNull(savedSchema);
 
         schemaAsserter.assertEquals(serviceModel, savedSchema, DataUnitSchemaServiceModelImpl_.ID);
@@ -73,10 +73,11 @@ class DataUnitSchemaServiceImplTest {
     void updateExistingSchemaTest() {
         final DataUnitSchemaServiceModel serviceModel = serviceModelGenerator.generate();
         final DataUnitSchemaPersistentModel persistentModel = persistentModelGenerator.generate();
-        Mockito.when(dao.save(ArgumentMatchers.any())).thenReturn(Mono.just(persistentModel));
+        Mockito.when(converter.convert(serviceModel)).thenReturn(persistentModel);
+        Mockito.when(dao.save(persistentModel)).thenReturn(Mono.just(persistentModel));
         Mockito.when(converter.convert(persistentModel)).thenReturn(serviceModelGenerator.generate());
 
-        final DataUnitSchemaServiceModel savedSchema = service.save(Mono.just(serviceModel)).block();
+        final DataUnitSchemaServiceModel savedSchema = service.save(serviceModel).block();
         Assertions.assertNotNull(savedSchema);
 
         schemaAsserter.assertEquals(serviceModel, savedSchema);
@@ -86,11 +87,11 @@ class DataUnitSchemaServiceImplTest {
     void findByIdTest() {
         final DataUnitSchemaServiceModel serviceModel = serviceModelGenerator.generate();
         final DataUnitSchemaPersistentModel persistentModel = persistentModelGenerator.generate();
-        Mockito.when(dao.findById(ArgumentMatchers.any())).thenReturn(Mono.just(persistentModel));
+        final Long id = serviceModel.getId();
+        Mockito.when(dao.findById(id)).thenReturn(Mono.just(persistentModel));
         Mockito.when(converter.convert(persistentModel)).thenReturn(serviceModel);
 
-        final Long id = serviceModel.getId();
-        final DataUnitSchemaServiceModel schema = service.findById(Mono.just(id)).block();
+        final DataUnitSchemaServiceModel schema = service.findById(id).block();
         Assertions.assertNotNull(schema);
 
         schemaAsserter.assertEquals(serviceModel, schema);
@@ -98,8 +99,8 @@ class DataUnitSchemaServiceImplTest {
 
     @Test
     void findByIdEmptyTest() {
-        Mockito.when(dao.findById(ArgumentMatchers.any())).thenReturn(Mono.justOrEmpty(Optional.empty()));
-        final DataUnitSchemaServiceModel schema = service.findById(Mono.just(DATA_UNIT_SCHEMA_ID_1)).block();
+        Mockito.when(dao.findById(DATA_UNIT_SCHEMA_ID_1)).thenReturn(Mono.justOrEmpty(Optional.empty()));
+        final DataUnitSchemaServiceModel schema = service.findById(DATA_UNIT_SCHEMA_ID_1).block();
 
         Assertions.assertNull(schema);
     }
@@ -111,14 +112,14 @@ class DataUnitSchemaServiceImplTest {
         final PaginationParams params1 = new PaginationParams(0, 2);
         final DataUnitSchemaPersistentModel existingSchemaPersistentModel1 = existingSchemaPersistentModel.get(0);
         final DataUnitSchemaPersistentModel existingSchemaPersistentModel2 = existingSchemaPersistentModel.get(1);
-        Mockito.when(dao.findAll(ArgumentMatchers.any())).thenReturn(
+        Mockito.when(dao.findAll(params1)).thenReturn(
                 Mono.just(List.of(existingSchemaPersistentModel1, existingSchemaPersistentModel2)));
         final DataUnitSchemaServiceModel existingSchemaServiceModel1 = existingSchemaServiceModels.get(0);
         Mockito.when(converter.convert(existingSchemaPersistentModel1)).thenReturn(existingSchemaServiceModel1);
         final DataUnitSchemaServiceModel existingSchemaServiceModel2 = existingSchemaServiceModels.get(1);
         Mockito.when(converter.convert(existingSchemaPersistentModel2)).thenReturn(existingSchemaServiceModel2);
 
-        final List<DataUnitSchemaServiceModel> schemas1 = service.findAll(Mono.just(params1)).block();
+        final List<DataUnitSchemaServiceModel> schemas1 = service.findAll(params1).block();
         Assertions.assertNotNull(schemas1);
         Assertions.assertEquals(2, schemas1.size());
 
@@ -127,11 +128,11 @@ class DataUnitSchemaServiceImplTest {
 
         final PaginationParams params2 = new PaginationParams(2, 2);
         final DataUnitSchemaPersistentModel existingSchemaPersistentModel3 = existingSchemaPersistentModel.get(2);
-        Mockito.when(dao.findAll(ArgumentMatchers.any())).thenReturn(Mono.just(List.of(existingSchemaPersistentModel3)));
+        Mockito.when(dao.findAll(params2)).thenReturn(Mono.just(List.of(existingSchemaPersistentModel3)));
         final DataUnitSchemaServiceModel existingSchemaServiceModel3 = existingSchemaServiceModels.get(0);
         Mockito.when(converter.convert(existingSchemaPersistentModel3)).thenReturn(existingSchemaServiceModel3);
 
-        final List<DataUnitSchemaServiceModel> schemas2 = service.findAll(Mono.just(params2)).block();
+        final List<DataUnitSchemaServiceModel> schemas2 = service.findAll(params2).block();
         Assertions.assertNotNull(schemas2);
         Assertions.assertEquals(1, schemas2.size());
 
@@ -141,18 +142,18 @@ class DataUnitSchemaServiceImplTest {
     @Test
     void findAllEmptyTest() {
         final PaginationParams params = new PaginationParams(0, 2);
-        Mockito.when(dao.findAll(ArgumentMatchers.any())).thenReturn(Mono.just(List.of()));
+        Mockito.when(dao.findAll(params)).thenReturn(Mono.just(List.of()));
 
-        final List<DataUnitSchemaServiceModel> schemas = service.findAll(Mono.just(params)).block();
+        final List<DataUnitSchemaServiceModel> schemas = service.findAll(params).block();
         Assertions.assertNotNull(schemas);
         Assertions.assertTrue(schemas.isEmpty());
     }
 
     @Test
     void deleteByIdTest() {
-        Mockito.when(dao.deleteById(ArgumentMatchers.any())).thenReturn(Mono.empty());
-
         final Long id = serviceModelGenerator.generate().getId();
-        Assertions.assertNull(service.deleteById(Mono.just(id)).block());
+        Mockito.when(dao.deleteById(id)).thenReturn(Mono.empty());
+
+        Assertions.assertNull(service.deleteById(id).block());
     }
 }

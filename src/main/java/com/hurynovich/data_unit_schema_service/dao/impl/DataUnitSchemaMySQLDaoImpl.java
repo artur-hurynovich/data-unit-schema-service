@@ -29,70 +29,66 @@ class DataUnitSchemaMySQLDaoImpl implements DataUnitSchemaDao {
     }
 
     @Override
-    public Mono<DataUnitSchemaPersistentModel> save(@NonNull final Mono<DataUnitSchemaPersistentModel> schema) {
-        return schema.flatMap(s ->
-                sessionFactory
-                        .withTransaction(session -> session.merge(s))
-                        .convert()
-                        .with(UniReactorConverters.toMono()));
+    public Mono<DataUnitSchemaPersistentModel> save(@NonNull final DataUnitSchemaPersistentModel schema) {
+        return sessionFactory
+                .withTransaction(session -> session.merge(schema))
+                .convert()
+                .with(UniReactorConverters.toMono());
     }
 
     @Override
-    public Mono<DataUnitSchemaPersistentModel> findById(@NonNull final Mono<Long> id) {
-        return id.flatMap(i ->
-                sessionFactory
-                        .withTransaction(session -> {
-                            final CriteriaBuilder criteriaBuilder = sessionFactory.getCriteriaBuilder();
-                            final CriteriaQuery<DataUnitSchemaEntity> criteriaQuery = criteriaBuilder
-                                    .createQuery(DataUnitSchemaEntity.class);
-                            final Root<DataUnitSchemaEntity> root = criteriaQuery.from(DataUnitSchemaEntity.class);
-                            root.fetch(DataUnitSchemaEntity_.PROPERTY_SCHEMAS, JoinType.LEFT);
-                            criteriaQuery
-                                    .where(criteriaBuilder.equal(
-                                            root.join(DataUnitSchemaEntity_.PROPERTY_SCHEMAS)
-                                                    .get(DataUnitPropertySchemaEntity_.DATA_UNIT_SCHEMA_ID), i))
-                                    .distinct(true);
+    public Mono<DataUnitSchemaPersistentModel> findById(@NonNull final Long id) {
+        return sessionFactory
+                .withTransaction(session -> {
+                    final CriteriaBuilder criteriaBuilder = sessionFactory.getCriteriaBuilder();
+                    final CriteriaQuery<DataUnitSchemaEntity> criteriaQuery = criteriaBuilder
+                            .createQuery(DataUnitSchemaEntity.class);
+                    final Root<DataUnitSchemaEntity> root = criteriaQuery.from(DataUnitSchemaEntity.class);
+                    root.fetch(DataUnitSchemaEntity_.PROPERTY_SCHEMAS, JoinType.LEFT);
+                    criteriaQuery
+                            .where(criteriaBuilder.equal(
+                                    root.join(DataUnitSchemaEntity_.PROPERTY_SCHEMAS)
+                                            .get(DataUnitPropertySchemaEntity_.DATA_UNIT_SCHEMA_ID), id))
+                            .distinct(true);
 
-                            return session.createQuery(criteriaQuery).getSingleResultOrNull();
-                        })
-                        .convert()
-                        .with(UniReactorConverters.toMono())
-                        .flatMap(schema -> Mono.justOrEmpty((DataUnitSchemaPersistentModel) schema)));
+                    return session.createQuery(criteriaQuery).getSingleResultOrNull();
+                })
+                .convert()
+                .with(UniReactorConverters.toMono())
+                .flatMap(schema -> Mono.justOrEmpty((DataUnitSchemaPersistentModel) schema));
     }
 
     @Override
-    public Mono<List<DataUnitSchemaPersistentModel>> findAll(@NonNull final Mono<PaginationParams> params) {
-        return params.flatMap(p ->
-                sessionFactory
-                        .withTransaction(session -> {
-                            final CriteriaBuilder criteriaBuilder = sessionFactory.getCriteriaBuilder();
-                            final CriteriaQuery<DataUnitSchemaEntity> criteriaQuery = criteriaBuilder
-                                    .createQuery(DataUnitSchemaEntity.class);
-                            final Root<DataUnitSchemaEntity> root = criteriaQuery.from(DataUnitSchemaEntity.class);
-                            criteriaQuery.select(root);
+    public Mono<List<DataUnitSchemaPersistentModel>> findAll(@NonNull final PaginationParams params) {
+        return sessionFactory
+                .withTransaction(session -> {
+                    final CriteriaBuilder criteriaBuilder = sessionFactory.getCriteriaBuilder();
+                    final CriteriaQuery<DataUnitSchemaEntity> criteriaQuery = criteriaBuilder
+                            .createQuery(DataUnitSchemaEntity.class);
+                    final Root<DataUnitSchemaEntity> root = criteriaQuery.from(DataUnitSchemaEntity.class);
+                    criteriaQuery.select(root);
 
-                            return session.createQuery(criteriaQuery)
-                                    .setFirstResult(p.offset())
-                                    .setMaxResults(p.limit())
-                                    .getResultList();
-                        })
-                        .convert()
-                        .with(UniReactorConverters.toMono())
-                        .flatMap(schemas -> Mono.just(schemas.stream()
-                                .map(DataUnitSchemaPersistentModel.class::cast)
-                                .collect(Collectors.toList()))));
+                    return session.createQuery(criteriaQuery)
+                            .setFirstResult(params.offset())
+                            .setMaxResults(params.limit())
+                            .getResultList();
+                })
+                .convert()
+                .with(UniReactorConverters.toMono())
+                .flatMap(schemas -> Mono.just(schemas.stream()
+                        .map(DataUnitSchemaPersistentModel.class::cast)
+                        .collect(Collectors.toList())));
     }
 
     @Override
-    public Mono<Void> deleteById(@NonNull final Mono<Long> id) {
-        return id.flatMap(i ->
-                sessionFactory
-                        .withTransaction(session -> session.find(DataUnitSchemaEntity.class, i)
-                                .onItem()
-                                .ifNotNull()
-                                .transformToUni(session::remove))
-                        .convert()
-                        .with(UniReactorConverters.toMono()));
+    public Mono<Void> deleteById(@NonNull final Long id) {
+        return sessionFactory
+                .withTransaction(session -> session.find(DataUnitSchemaEntity.class, id)
+                        .onItem()
+                        .ifNotNull()
+                        .transformToUni(session::remove))
+                .convert()
+                .with(UniReactorConverters.toMono());
     }
 
     @Override
