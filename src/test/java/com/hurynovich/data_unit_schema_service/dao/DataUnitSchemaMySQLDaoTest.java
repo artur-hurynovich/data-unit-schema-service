@@ -2,6 +2,7 @@ package com.hurynovich.data_unit_schema_service.dao;
 
 import com.hurynovich.data_unit_schema_service.DataUnitSchemaServiceApplication;
 import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
+import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity_;
@@ -85,14 +86,30 @@ class DataUnitSchemaMySQLDaoTest {
         Assertions.assertNotNull(schemas1);
         Assertions.assertEquals(2, schemas1.size());
 
-        schemaAsserter.assertEquals(existingSchemas.get(0), schemas1.get(0), DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
-        schemaAsserter.assertEquals(existingSchemas.get(1), schemas1.get(1), DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
+        final DataUnitSchemaPersistentModel schema1 = schemas1.get(0);
+        schemaAsserter.assertEquals(existingSchemas.get(0), schema1, DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
+        final List<DataUnitPropertySchemaPersistentModel> propertySchemas1 =
+                schema1.getPropertySchemas();
+        Assertions.assertNotNull(propertySchemas1);
+        Assertions.assertTrue(propertySchemas1.isEmpty());
+
+        final DataUnitSchemaPersistentModel schema2 = schemas1.get(1);
+        schemaAsserter.assertEquals(existingSchemas.get(1), schema2, DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
+        final List<DataUnitPropertySchemaPersistentModel> propertySchemas2 =
+                schema2.getPropertySchemas();
+        Assertions.assertNotNull(propertySchemas2);
+        Assertions.assertTrue(propertySchemas2.isEmpty());
 
         final List<DataUnitSchemaPersistentModel> schemas2 = dao.findAll(new PaginationParams(2, 2)).block();
         Assertions.assertNotNull(schemas2);
         Assertions.assertEquals(1, schemas2.size());
 
-        schemaAsserter.assertEquals(existingSchemas.get(2), schemas2.get(0), DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
+        final DataUnitSchemaPersistentModel schema3 = schemas2.get(0);
+        schemaAsserter.assertEquals(existingSchemas.get(2), schema3, DataUnitSchemaEntity_.PROPERTY_SCHEMAS);
+        final List<DataUnitPropertySchemaPersistentModel> propertySchemas3 =
+                schema3.getPropertySchemas();
+        Assertions.assertNotNull(propertySchemas3);
+        Assertions.assertTrue(propertySchemas3.isEmpty());
     }
 
     @Test

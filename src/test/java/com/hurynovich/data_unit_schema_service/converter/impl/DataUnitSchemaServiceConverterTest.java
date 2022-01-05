@@ -1,11 +1,9 @@
 package com.hurynovich.data_unit_schema_service.converter.impl;
 
 import com.hurynovich.data_unit_schema_service.converter.ServiceConverter;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
-import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModelImpl_;
 import com.hurynovich.data_unit_schema_service.model_asserter.ModelAsserter;
 import com.hurynovich.data_unit_schema_service.model_asserter.impl.DataUnitSchemaAsserter;
 import com.hurynovich.data_unit_schema_service.model_generator.ModelGenerator;
@@ -13,8 +11,6 @@ import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSche
 import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSchemaServiceModelGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 class DataUnitSchemaServiceConverterTest {
 
@@ -31,36 +27,20 @@ class DataUnitSchemaServiceConverterTest {
             new DataUnitSchemaAsserter();
 
     @Test
-    void convertPersistentModelNullConvertAssociationTrueTest() {
-        Assertions.assertNull(converter.convert(null, true));
+    void convertPersistentModelNullTest() {
+        Assertions.assertNull(converter.convert((DataUnitSchemaPersistentModel) null));
     }
 
     @Test
-    void convertPersistentModelNullConvertAssociationFalseTest() {
-        Assertions.assertNull(converter.convert(null, false));
-    }
-
-    @Test
-    void convertPersistentModelNotNullConvertAssociationTrueTest() {
+    void convertPersistentModelNotNullTest() {
         final DataUnitSchemaPersistentModel persistentModel = persistentModelGenerator.generate();
-        final DataUnitSchemaServiceModel serviceModel = converter.convert(persistentModel, true);
+        final DataUnitSchemaServiceModel serviceModel = converter.convert(persistentModel);
         asserter.assertEquals(persistentModel, serviceModel);
     }
 
     @Test
-    void convertPersistentModelNotNullConvertAssociationFalseTest() {
-        final DataUnitSchemaPersistentModel persistentModel = persistentModelGenerator.generate();
-        final DataUnitSchemaServiceModel serviceModel = converter.convert(persistentModel, false);
-        asserter.assertEquals(persistentModel, serviceModel, DataUnitSchemaServiceModelImpl_.PROPERTY_SCHEMAS);
-
-        final List<DataUnitPropertySchemaServiceModel> propertySchemas = serviceModel.getPropertySchemas();
-        Assertions.assertNotNull(propertySchemas);
-        Assertions.assertTrue(propertySchemas.isEmpty());
-    }
-
-    @Test
     void convertServiceModelNullTest() {
-        Assertions.assertNull(converter.convert(null));
+        Assertions.assertNull(converter.convert((DataUnitSchemaServiceModel) null));
     }
 
     @Test

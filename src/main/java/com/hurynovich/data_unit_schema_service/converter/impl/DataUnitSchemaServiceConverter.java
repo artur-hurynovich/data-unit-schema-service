@@ -13,8 +13,6 @@ import com.hurynovich.data_unit_schema_service.utils.MassProcessingUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 class DataUnitSchemaServiceConverter
         implements ServiceConverter<DataUnitSchemaServiceModel, DataUnitSchemaPersistentModel> {
@@ -51,19 +49,11 @@ class DataUnitSchemaServiceConverter
     }
 
     @Override
-    public DataUnitSchemaServiceModel convert(@Nullable final DataUnitSchemaPersistentModel source,
-                                              boolean convertAssociations) {
+    public DataUnitSchemaServiceModel convert(@Nullable final DataUnitSchemaPersistentModel source) {
         final DataUnitSchemaServiceModelImpl target;
         if (source != null) {
-            final List<DataUnitPropertySchemaServiceModel> propertySchemas;
-            if (convertAssociations) {
-                propertySchemas = MassProcessingUtils.processQuietly(source.getPropertySchemas(),
-                        this::convertPropertySchema);
-            } else {
-                propertySchemas = List.of();
-            }
-
-            target = new DataUnitSchemaServiceModelImpl(source.getId(), source.getName(), propertySchemas);
+            target = new DataUnitSchemaServiceModelImpl(source.getId(), source.getName(),
+                    MassProcessingUtils.processQuietly(source.getPropertySchemas(), this::convertPropertySchema));
         } else {
             target = null;
         }
