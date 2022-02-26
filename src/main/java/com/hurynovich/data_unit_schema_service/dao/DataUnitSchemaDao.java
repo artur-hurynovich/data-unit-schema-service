@@ -11,11 +11,11 @@ public interface DataUnitSchemaDao {
 
     Mono<DataUnitSchemaPersistentModel> save(@NonNull DataUnitSchemaPersistentModel schema);
 
-    Mono<DataUnitSchemaPersistentModel> findById(@NonNull Long id);
+    Mono<DataUnitSchemaPersistentModel> findById(@NonNull String id);
 
     Mono<List<DataUnitSchemaPersistentModel>> findAll(@NonNull PaginationParams params);
 
-    Mono<Void> deleteById(@NonNull Long id);
+    Mono<DataUnitSchemaPersistentModel> deleteById(@NonNull String id);
 
     Mono<Long> count();
 }

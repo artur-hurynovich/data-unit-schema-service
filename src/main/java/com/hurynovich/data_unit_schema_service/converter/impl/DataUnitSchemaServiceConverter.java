@@ -1,11 +1,11 @@
 package com.hurynovich.data_unit_schema_service.converter.impl;
 
 import com.hurynovich.data_unit_schema_service.converter.ServiceConverter;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaEntity;
+import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaDocument;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaServiceModelImpl;
-import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity;
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaDocument;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModelImpl;
@@ -19,9 +19,9 @@ class DataUnitSchemaServiceConverter
 
     @Override
     public DataUnitSchemaPersistentModel convert(@Nullable final DataUnitSchemaServiceModel source) {
-        final DataUnitSchemaEntity target;
+        final DataUnitSchemaDocument target;
         if (source != null) {
-            target = new DataUnitSchemaEntity();
+            target = new DataUnitSchemaDocument();
             target.setId(source.getId());
             target.setName(source.getName());
             target.setPropertySchemas(MassProcessingUtils.
@@ -35,9 +35,9 @@ class DataUnitSchemaServiceConverter
 
     private DataUnitPropertySchemaPersistentModel convertPropertySchema(
             @Nullable final DataUnitPropertySchemaServiceModel source) {
-        final DataUnitPropertySchemaEntity target;
+        final DataUnitPropertySchemaDocument target;
         if (source != null) {
-            target = new DataUnitPropertySchemaEntity();
+            target = new DataUnitPropertySchemaDocument();
             target.setId(source.getId());
             target.setName(source.getName());
             target.setType(source.getType());

@@ -2,11 +2,11 @@ package com.hurynovich.data_unit_schema_service.model_asserter.impl;
 
 import com.hurynovich.data_unit_schema_service.model.DataUnitPropertyType;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaApiModel;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaEntity_;
+import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaDocument_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
-import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity_;
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaDocument_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model_asserter.ModelAsserter;
@@ -85,15 +85,15 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
                                      final DataUnitSchemaWrapper actual,
                                      final String... ignoreProperties) {
         final Set<String> ignorePropertiesSet = Set.of(ignoreProperties);
-        if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.ID)) {
+        if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.ID)) {
             Assertions.assertEquals(expected.id(), actual.id());
         }
 
-        if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.NAME)) {
+        if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.NAME)) {
             Assertions.assertEquals(expected.name(), actual.name());
         }
 
-        if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.PROPERTY_SCHEMAS)) {
+        if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.PROPERTY_SCHEMAS)) {
             final List<DataUnitPropertySchemaWrapper> expectedPropertySchemas = expected.propertySchemas();
             final List<DataUnitPropertySchemaWrapper> actualPropertySchemas = actual.propertySchemas();
             Assertions.assertEquals(expectedPropertySchemas.size(), actualPropertySchemas.size());
@@ -101,7 +101,7 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
             for (int i = 0; i < expectedPropertySchemas.size(); i++) {
                 final DataUnitPropertySchemaWrapper expectedPropertySchema = expectedPropertySchemas.get(i);
                 final DataUnitPropertySchemaWrapper actualPropertySchema = actualPropertySchemas.get(i);
-                if (!ignorePropertiesSet.contains(DataUnitPropertySchemaEntity_.ID)) {
+                if (!ignorePropertiesSet.contains(DataUnitPropertySchemaDocument_.ID)) {
                     Assertions.assertEquals(expectedPropertySchema.id(), actualPropertySchema.id());
                 }
 
@@ -111,28 +111,28 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
         }
     }
 
-    private record DataUnitSchemaWrapper(Long id, String name,
+    private record DataUnitSchemaWrapper(String id, String name,
                                          List<DataUnitPropertySchemaWrapper> propertySchemas) {
 
         public static DataUnitSchemaWrapper of(final DataUnitSchemaApiModel schema,
                                                final String... ignoreProperties) {
             final Set<String> ignorePropertiesSet = Set.of(ignoreProperties);
-            final Long id;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.ID)) {
+            final String id;
+            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.ID)) {
                 id = schema.getId();
             } else {
                 id = null;
             }
 
             final String name;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.NAME)) {
+            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.NAME)) {
                 name = schema.getName();
             } else {
                 name = null;
             }
 
             final List<DataUnitPropertySchemaWrapper> propertySchemas;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.PROPERTY_SCHEMAS)) {
+            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.PROPERTY_SCHEMAS)) {
                 propertySchemas = MassProcessingUtils.processQuietly(schema.getPropertySchemas(),
                         DataUnitPropertySchemaWrapper::of);
             } else {
@@ -145,22 +145,22 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
         public static DataUnitSchemaWrapper of(final DataUnitSchemaServiceModel schema,
                                                final String... ignoreProperties) {
             final Set<String> ignorePropertiesSet = Set.of(ignoreProperties);
-            final Long id;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.ID)) {
+            final String id;
+            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.ID)) {
                 id = schema.getId();
             } else {
                 id = null;
             }
 
             final String name;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.NAME)) {
+            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.NAME)) {
                 name = schema.getName();
             } else {
                 name = null;
             }
 
             final List<DataUnitPropertySchemaWrapper> propertySchemas;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.PROPERTY_SCHEMAS)) {
+            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.PROPERTY_SCHEMAS)) {
                 propertySchemas = MassProcessingUtils.processQuietly(schema.getPropertySchemas(),
                         DataUnitPropertySchemaWrapper::of);
             } else {
@@ -173,22 +173,22 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
         public static DataUnitSchemaWrapper of(final DataUnitSchemaPersistentModel schema,
                                                final String... ignoreProperties) {
             final Set<String> ignorePropertiesSet = Set.of(ignoreProperties);
-            final Long id;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.ID)) {
+            final String id;
+            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.ID)) {
                 id = schema.getId();
             } else {
                 id = null;
             }
 
             final String name;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.NAME)) {
+            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.NAME)) {
                 name = schema.getName();
             } else {
                 name = null;
             }
 
             final List<DataUnitPropertySchemaWrapper> propertySchemas;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaEntity_.PROPERTY_SCHEMAS)) {
+            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.PROPERTY_SCHEMAS)) {
                 propertySchemas = MassProcessingUtils.processQuietly(schema.getPropertySchemas(),
                         DataUnitPropertySchemaWrapper::of);
             } else {
@@ -199,7 +199,7 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
         }
     }
 
-    private record DataUnitPropertySchemaWrapper(Long id, String name,
+    private record DataUnitPropertySchemaWrapper(String id, String name,
                                                  DataUnitPropertyType type) {
 
         public static DataUnitPropertySchemaWrapper of(final DataUnitPropertySchemaApiModel propertySchema,

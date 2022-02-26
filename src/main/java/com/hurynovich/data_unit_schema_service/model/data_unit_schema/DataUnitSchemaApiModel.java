@@ -7,7 +7,7 @@ import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.D
 import java.util.List;
 
 @JsonDeserialize(as = DataUnitSchemaApiModelImpl.class)
-public interface DataUnitSchemaApiModel extends ApiModel<Long> {
+public interface DataUnitSchemaApiModel extends ApiModel<String> {
 
     String getName();
 

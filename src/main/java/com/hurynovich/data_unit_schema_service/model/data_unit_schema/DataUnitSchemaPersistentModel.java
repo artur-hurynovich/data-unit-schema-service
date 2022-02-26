@@ -5,7 +5,7 @@ import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.D
 
 import java.util.List;
 
-public interface DataUnitSchemaPersistentModel extends PersistentModel<Long> {
+public interface DataUnitSchemaPersistentModel extends PersistentModel<String> {
 
     String getName();
 

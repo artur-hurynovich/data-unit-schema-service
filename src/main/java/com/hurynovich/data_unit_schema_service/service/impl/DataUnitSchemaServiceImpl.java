@@ -28,23 +28,26 @@ class DataUnitSchemaServiceImpl implements DataUnitSchemaService {
 
     @Override
     public Mono<DataUnitSchemaServiceModel> save(@NonNull final DataUnitSchemaServiceModel schema) {
-        return dao.save(converter.convert(schema)).flatMap(s -> Mono.justOrEmpty(converter.convert(s)));
+        return dao.save(converter.convert(schema))
+                .flatMap(s -> Mono.justOrEmpty(converter.convert(s)));
     }
 
     @Override
-    public Mono<DataUnitSchemaServiceModel> findById(@NonNull final Long id) {
-        return dao.findById(id).flatMap(s -> Mono.justOrEmpty(converter.convert(s)));
+    public Mono<DataUnitSchemaServiceModel> findById(@NonNull final String id) {
+        return dao.findById(id)
+                .flatMap(schema -> Mono.justOrEmpty(converter.convert(schema)));
     }
 
     @Override
     public Mono<List<DataUnitSchemaServiceModel>> findAll(@NonNull final PaginationParams params) {
-        return dao.findAll(params).flatMap(schemas ->
-                Mono.just(MassProcessingUtils.processQuietly(schemas, converter::convert)));
+        return dao.findAll(params)
+                .flatMap(schemas -> Mono.just(MassProcessingUtils.processQuietly(schemas, converter::convert)));
     }
 
     @Override
-    public Mono<Void> deleteById(@NonNull final Long id) {
-        return dao.deleteById(id);
+    public Mono<DataUnitSchemaServiceModel> deleteById(@NonNull final String id) {
+        return dao.deleteById(id)
+                .flatMap(schema -> Mono.justOrEmpty(converter.convert(schema)));
     }
 
     @Override

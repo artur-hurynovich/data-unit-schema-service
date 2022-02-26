@@ -5,7 +5,7 @@ import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.D
 
 import java.util.List;
 
-public interface DataUnitSchemaServiceModel extends ServiceModel<Long> {
+public interface DataUnitSchemaServiceModel extends ServiceModel<String> {
 
     String getName();
 

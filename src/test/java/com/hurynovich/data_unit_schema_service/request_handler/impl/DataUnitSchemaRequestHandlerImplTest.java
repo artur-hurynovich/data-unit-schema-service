@@ -108,7 +108,7 @@ class DataUnitSchemaRequestHandlerImplTest {
 
     @Test
     public void getSchemaByIdTest() {
-        Mockito.when(request.pathVariable(DataUnitSchemaApiModelImpl_.ID)).thenReturn(DATA_UNIT_SCHEMA_ID_1.toString());
+        Mockito.when(request.pathVariable(DataUnitSchemaApiModelImpl_.ID)).thenReturn(DATA_UNIT_SCHEMA_ID_1);
         final DataUnitSchemaServiceModel serviceModel = serviceModelGenerator.generate();
         Mockito.when(service.findById(DATA_UNIT_SCHEMA_ID_1)).thenReturn(Mono.just(serviceModel));
         final DataUnitSchemaApiModel apiModel = apiModelGenerator.generate();
@@ -214,7 +214,7 @@ class DataUnitSchemaRequestHandlerImplTest {
     }
 
     private DataUnitSchemaApiModel buildSchema(final JsonNode schemaNode) {
-        return new DataUnitSchemaApiModelImpl(schemaNode.get(DataUnitSchemaApiModelImpl_.ID).asLong(),
+        return new DataUnitSchemaApiModelImpl(schemaNode.get(DataUnitSchemaApiModelImpl_.ID).asText(),
                 schemaNode.get(DataUnitSchemaApiModelImpl_.NAME).asText(),
                 buildPropertySchemas(schemaNode.get(DataUnitSchemaApiModelImpl_.PROPERTY_SCHEMAS)));
     }
@@ -226,7 +226,7 @@ class DataUnitSchemaRequestHandlerImplTest {
     }
 
     private DataUnitPropertySchemaApiModel buildPropertySchema(final JsonNode propertySchemaNode) {
-        return new DataUnitPropertySchemaApiModelImpl(propertySchemaNode.get(DataUnitPropertySchemaApiModelImpl_.ID).asLong(),
+        return new DataUnitPropertySchemaApiModelImpl(propertySchemaNode.get(DataUnitPropertySchemaApiModelImpl_.ID).asText(),
                 propertySchemaNode.get(DataUnitPropertySchemaApiModelImpl_.NAME).asText(),
                 DataUnitPropertyType.valueOf(propertySchemaNode.get(DataUnitPropertySchemaApiModelImpl_.TYPE).asText()));
     }

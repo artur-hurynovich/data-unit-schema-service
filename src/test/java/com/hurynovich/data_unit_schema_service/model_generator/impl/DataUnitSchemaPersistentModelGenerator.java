@@ -1,9 +1,9 @@
 package com.hurynovich.data_unit_schema_service.model_generator.impl;
 
 import com.hurynovich.data_unit_schema_service.model.DataUnitPropertyType;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaEntity;
+import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaDocument;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
-import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaEntity;
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaDocument;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model_generator.ModelGenerator;
 
@@ -42,9 +42,9 @@ public class DataUnitSchemaPersistentModelGenerator implements ModelGenerator<Da
         return processGenerate(null, DATA_UNIT_SCHEMA_NAME_1, generatePropertySchemasWithNullIds());
     }
 
-    private DataUnitSchemaPersistentModel processGenerate(final Long id, final String name,
+    private DataUnitSchemaPersistentModel processGenerate(final String id, final String name,
                                                           final List<DataUnitPropertySchemaPersistentModel> propertySchemas) {
-        final DataUnitSchemaEntity schema = new DataUnitSchemaEntity();
+        final DataUnitSchemaDocument schema = new DataUnitSchemaDocument();
         schema.setId(id);
         schema.setName(name);
         schema.setPropertySchemas(propertySchemas);
@@ -70,9 +70,9 @@ public class DataUnitSchemaPersistentModelGenerator implements ModelGenerator<Da
                 propertySchema5, propertySchema6);
     }
 
-    private DataUnitPropertySchemaPersistentModel processGeneratePropertySchema(final Long id, final String name,
+    private DataUnitPropertySchemaPersistentModel processGeneratePropertySchema(final String id, final String name,
                                                                                 final DataUnitPropertyType type) {
-        final DataUnitPropertySchemaEntity propertySchema = new DataUnitPropertySchemaEntity();
+        final DataUnitPropertySchemaDocument propertySchema = new DataUnitPropertySchemaDocument();
         propertySchema.setId(id);
         propertySchema.setName(name);
         propertySchema.setType(type);

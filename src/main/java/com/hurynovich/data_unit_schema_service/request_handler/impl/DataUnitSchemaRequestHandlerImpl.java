@@ -59,7 +59,7 @@ class DataUnitSchemaRequestHandlerImpl implements DataUnitSchemaRequestHandler {
 
     @Override
     public Mono<ServerResponse> getSchemaById(@NonNull final ServerRequest request) {
-        final Long id = Long.valueOf(request.pathVariable(DataUnitSchemaApiModelImpl_.ID));
+        final String id = request.pathVariable(DataUnitSchemaApiModelImpl_.ID);
 
         return service.findById(id)
                 .flatMap(schema -> ServerResponse.ok().bodyValue(converter.convert(schema)));
@@ -98,9 +98,9 @@ class DataUnitSchemaRequestHandlerImpl implements DataUnitSchemaRequestHandler {
 
     @Override
     public Mono<ServerResponse> deleteSchemaById(@NonNull final ServerRequest request) {
-        final Long id = Long.valueOf(request.pathVariable(DataUnitSchemaApiModelImpl_.ID));
+        final String id = request.pathVariable(DataUnitSchemaApiModelImpl_.ID);
 
         return service.deleteById(id)
-                .flatMap(schema -> ServerResponse.noContent().build());
+                .flatMap(schema -> ServerResponse.ok().bodyValue(converter.convert(schema)));
     }
 }

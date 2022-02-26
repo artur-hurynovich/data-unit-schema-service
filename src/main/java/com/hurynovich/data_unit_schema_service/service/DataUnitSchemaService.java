@@ -11,11 +11,11 @@ public interface DataUnitSchemaService {
 
     Mono<DataUnitSchemaServiceModel> save(@NonNull DataUnitSchemaServiceModel schema);
 
-    Mono<DataUnitSchemaServiceModel> findById(@NonNull Long id);
+    Mono<DataUnitSchemaServiceModel> findById(@NonNull String id);
 
     Mono<List<DataUnitSchemaServiceModel>> findAll(@NonNull PaginationParams params);
 
-    Mono<Void> deleteById(@NonNull Long id);
+    Mono<DataUnitSchemaServiceModel> deleteById(@NonNull String id);
 
     Mono<Long> count();
 }

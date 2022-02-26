@@ -42,7 +42,7 @@ public class DataUnitSchemaApiModelGenerator implements ModelGenerator<DataUnitS
         return processGenerate(null, DATA_UNIT_SCHEMA_NAME_1, generatePropertySchemasWithNullIds());
     }
 
-    private DataUnitSchemaApiModel processGenerate(final Long id, final String name,
+    private DataUnitSchemaApiModel processGenerate(final String id, final String name,
                                                    final List<DataUnitPropertySchemaApiModel> propertySchemas) {
         return new DataUnitSchemaApiModelImpl(id, name, propertySchemas);
     }
@@ -65,7 +65,7 @@ public class DataUnitSchemaApiModelGenerator implements ModelGenerator<DataUnitS
                 propertySchema5, propertySchema6);
     }
 
-    private DataUnitPropertySchemaApiModel processGeneratePropertySchema(final Long id, final String name,
+    private DataUnitPropertySchemaApiModel processGeneratePropertySchema(final String id, final String name,
                                                                          final DataUnitPropertyType type) {
         return new DataUnitPropertySchemaApiModelImpl(id, name, type);
     }

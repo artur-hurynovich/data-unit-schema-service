@@ -6,12 +6,12 @@ import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.D
 import java.util.List;
 
 @GenerateMetamodel
-public record DataUnitSchemaServiceModelImpl(Long id, String name,
+public record DataUnitSchemaServiceModelImpl(String id, String name,
                                              List<DataUnitPropertySchemaServiceModel> propertySchemas)
         implements DataUnitSchemaServiceModel {
 
     @Override
-    public Long getId() {
+    public String getId() {
         return id();
     }
 
