@@ -16,6 +16,8 @@ public class DataUnitPropertySchemaDocument implements DataUnitPropertySchemaPer
 
     private DataUnitPropertyType type;
 
+    private String schemaId;
+
     @Override
     public String getId() {
         return id;
@@ -41,5 +43,14 @@ public class DataUnitPropertySchemaDocument implements DataUnitPropertySchemaPer
 
     public void setType(final DataUnitPropertyType type) {
         this.type = type;
+    }
+
+    @Override
+    public String getSchemaId() {
+        return schemaId;
+    }
+
+    public void setSchemaId(final String schemaId) {
+        this.schemaId = schemaId;
     }
 }

@@ -8,4 +8,6 @@ public interface DataUnitPropertySchemaPersistentModel extends PersistentModel<S
     String getName();
 
     DataUnitPropertyType getType();
+
+    String getSchemaId();
 }

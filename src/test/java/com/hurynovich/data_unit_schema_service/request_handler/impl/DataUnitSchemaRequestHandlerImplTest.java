@@ -5,10 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hurynovich.data_unit_schema_service.converter.ApiConverter;
 import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
-import com.hurynovich.data_unit_schema_service.model.DataUnitPropertyType;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaApiModel;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaApiModelImpl;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaApiModelImpl_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModelImpl;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModelImpl_;
@@ -215,20 +211,7 @@ class DataUnitSchemaRequestHandlerImplTest {
 
     private DataUnitSchemaApiModel buildSchema(final JsonNode schemaNode) {
         return new DataUnitSchemaApiModelImpl(schemaNode.get(DataUnitSchemaApiModelImpl_.ID).asText(),
-                schemaNode.get(DataUnitSchemaApiModelImpl_.NAME).asText(),
-                buildPropertySchemas(schemaNode.get(DataUnitSchemaApiModelImpl_.PROPERTY_SCHEMAS)));
-    }
-
-    private List<DataUnitPropertySchemaApiModel> buildPropertySchemas(final JsonNode propertySchemasNode) {
-        return StreamSupport.stream(propertySchemasNode.spliterator(), false).
-                map(this::buildPropertySchema).
-                collect(Collectors.toList());
-    }
-
-    private DataUnitPropertySchemaApiModel buildPropertySchema(final JsonNode propertySchemaNode) {
-        return new DataUnitPropertySchemaApiModelImpl(propertySchemaNode.get(DataUnitPropertySchemaApiModelImpl_.ID).asText(),
-                propertySchemaNode.get(DataUnitPropertySchemaApiModelImpl_.NAME).asText(),
-                DataUnitPropertyType.valueOf(propertySchemaNode.get(DataUnitPropertySchemaApiModelImpl_.TYPE).asText()));
+                schemaNode.get(DataUnitSchemaApiModelImpl_.NAME).asText());
     }
 
     private Long buildNullableLong(final JsonNode node) {

@@ -95,6 +95,6 @@ class PaginatorImplTest {
     }
 
     private DataUnitSchemaApiModel buildMockElement(final String id) {
-        return new DataUnitSchemaApiModelImpl(id, "", List.of());
+        return new DataUnitSchemaApiModelImpl(id, "");
     }
 }

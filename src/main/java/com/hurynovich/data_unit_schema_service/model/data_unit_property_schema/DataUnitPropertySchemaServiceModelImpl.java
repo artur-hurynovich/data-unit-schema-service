@@ -2,7 +2,8 @@ package com.hurynovich.data_unit_schema_service.model.data_unit_property_schema;
 
 import com.hurynovich.data_unit_schema_service.model.DataUnitPropertyType;
 
-public record DataUnitPropertySchemaServiceModelImpl(String id, String name, DataUnitPropertyType type)
+public record DataUnitPropertySchemaServiceModelImpl(String id, String name, DataUnitPropertyType type,
+                                                     String schemaId)
         implements DataUnitPropertySchemaServiceModel {
 
     @Override
@@ -18,5 +19,10 @@ public record DataUnitPropertySchemaServiceModelImpl(String id, String name, Dat
     @Override
     public DataUnitPropertyType getType() {
         return type();
+    }
+
+    @Override
+    public String getSchemaId() {
+        return schemaId();
     }
 }

@@ -8,4 +8,6 @@ public interface DataUnitPropertySchemaServiceModel extends ServiceModel<String>
     String getName();
 
     DataUnitPropertyType getType();
+
+    String getSchemaId();
 }

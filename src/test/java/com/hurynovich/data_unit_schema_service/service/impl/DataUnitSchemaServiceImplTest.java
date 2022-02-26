@@ -3,13 +3,9 @@ package com.hurynovich.data_unit_schema_service.service.impl;
 import com.hurynovich.data_unit_schema_service.converter.ServiceConverter;
 import com.hurynovich.data_unit_schema_service.dao.DataUnitSchemaDao;
 import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
-import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaDocument;
-import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaDocument_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
-import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModelImpl;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModelImpl_;
 import com.hurynovich.data_unit_schema_service.model_asserter.ModelAsserter;
 import com.hurynovich.data_unit_schema_service.model_asserter.impl.DataUnitSchemaAsserter;
@@ -110,17 +106,12 @@ class DataUnitSchemaServiceImplTest {
 
     @Test
     void findAllTest() {
-        final List<DataUnitSchemaServiceModel> existingSchemaServiceModels = serviceModelGenerator.generateList()
-                .stream()
-                .map(this::copyIgnoringPropertySchemas)
-                .toList();
+        final List<DataUnitSchemaServiceModel> existingSchemaServiceModels = serviceModelGenerator.generateList();
 
         final List<DataUnitSchemaPersistentModel> existingSchemaPersistentModel = persistentModelGenerator.generateList();
         final PaginationParams params1 = new PaginationParams(0, 2);
         final DataUnitSchemaPersistentModel existingSchemaPersistentModel1 = existingSchemaPersistentModel.get(0);
-        ((DataUnitSchemaDocument) existingSchemaPersistentModel1).setPropertySchemas(List.of());
         final DataUnitSchemaPersistentModel existingSchemaPersistentModel2 = existingSchemaPersistentModel.get(1);
-        ((DataUnitSchemaDocument) existingSchemaPersistentModel2).setPropertySchemas(List.of());
         Mockito.when(dao.findAll(params1)).thenReturn(
                 Mono.just(List.of(existingSchemaPersistentModel1, existingSchemaPersistentModel2)));
         final DataUnitSchemaServiceModel existingSchemaServiceModel1 = existingSchemaServiceModels.get(0);
@@ -134,23 +125,11 @@ class DataUnitSchemaServiceImplTest {
         Assertions.assertNotNull(schemas1);
         Assertions.assertEquals(2, schemas1.size());
 
-        schemaAsserter.assertEquals(existingSchemaServiceModel1, schemas1.get(0),
-                DataUnitSchemaDocument_.PROPERTY_SCHEMAS);
-        final List<DataUnitPropertySchemaServiceModel> propertySchemas1 = existingSchemaServiceModel1
-                .getPropertySchemas();
-        Assertions.assertNotNull(propertySchemas1);
-        Assertions.assertTrue(propertySchemas1.isEmpty());
-
-        schemaAsserter.assertEquals(existingSchemaServiceModel2, schemas1.get(1),
-                DataUnitSchemaDocument_.PROPERTY_SCHEMAS);
-        final List<DataUnitPropertySchemaServiceModel> propertySchemas2 = existingSchemaServiceModel1
-                .getPropertySchemas();
-        Assertions.assertNotNull(propertySchemas2);
-        Assertions.assertTrue(propertySchemas2.isEmpty());
+        schemaAsserter.assertEquals(existingSchemaServiceModel1, schemas1.get(0));
+        schemaAsserter.assertEquals(existingSchemaServiceModel2, schemas1.get(1));
 
         final PaginationParams params2 = new PaginationParams(2, 2);
         final DataUnitSchemaPersistentModel existingSchemaPersistentModel3 = existingSchemaPersistentModel.get(2);
-        ((DataUnitSchemaDocument) existingSchemaPersistentModel3).setPropertySchemas(List.of());
         Mockito.when(dao.findAll(params2)).thenReturn(Mono.just(List.of(existingSchemaPersistentModel3)));
         final DataUnitSchemaServiceModel existingSchemaServiceModel3 = existingSchemaServiceModels.get(0);
         Mockito.when(converter.convert(existingSchemaPersistentModel3))
@@ -159,13 +138,6 @@ class DataUnitSchemaServiceImplTest {
         final List<DataUnitSchemaServiceModel> schemas2 = service.findAll(params2).block();
         Assertions.assertNotNull(schemas2);
         Assertions.assertEquals(1, schemas2.size());
-
-        schemaAsserter.assertEquals(existingSchemaServiceModel3, schemas2.get(0),
-                DataUnitSchemaDocument_.PROPERTY_SCHEMAS);
-        final List<DataUnitPropertySchemaServiceModel> propertySchemas3 = existingSchemaServiceModel1
-                .getPropertySchemas();
-        Assertions.assertNotNull(propertySchemas3);
-        Assertions.assertTrue(propertySchemas3.isEmpty());
     }
 
     @Test
@@ -184,9 +156,5 @@ class DataUnitSchemaServiceImplTest {
         Mockito.when(dao.deleteById(id)).thenReturn(Mono.empty());
 
         Assertions.assertNull(service.deleteById(id).block());
-    }
-
-    private DataUnitSchemaServiceModel copyIgnoringPropertySchemas(final DataUnitSchemaServiceModel schema) {
-        return new DataUnitSchemaServiceModelImpl(schema.getId(), schema.getName(), List.of());
     }
 }

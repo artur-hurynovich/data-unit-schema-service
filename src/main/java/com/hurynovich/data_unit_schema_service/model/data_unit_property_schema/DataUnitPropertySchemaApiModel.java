@@ -10,4 +10,6 @@ public interface DataUnitPropertySchemaApiModel extends ApiModel<String> {
     String getName();
 
     DataUnitPropertyType getType();
+
+    String getSchemaId();
 }

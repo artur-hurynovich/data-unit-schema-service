@@ -1,11 +1,8 @@
 package com.hurynovich.data_unit_schema_service.model.data_unit_schema;
 
 import com.hurynovich.GenerateMetamodel;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.List;
 
 @Document
 @GenerateMetamodel
@@ -15,8 +12,6 @@ public class DataUnitSchemaDocument implements DataUnitSchemaPersistentModel {
     private String id;
 
     private String name;
-
-    private List<DataUnitPropertySchemaPersistentModel> propertySchemas;
 
     @Override
     public String getId() {
@@ -34,14 +29,5 @@ public class DataUnitSchemaDocument implements DataUnitSchemaPersistentModel {
 
     public void setName(final String name) {
         this.name = name;
-    }
-
-    @Override
-    public List<DataUnitPropertySchemaPersistentModel> getPropertySchemas() {
-        return propertySchemas;
-    }
-
-    public void setPropertySchemas(final List<DataUnitPropertySchemaPersistentModel> propertySchemas) {
-        this.propertySchemas = propertySchemas;
     }
 }

@@ -1,19 +1,12 @@
 package com.hurynovich.data_unit_schema_service.model_asserter.impl;
 
-import com.hurynovich.data_unit_schema_service.model.DataUnitPropertyType;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaApiModel;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaDocument_;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaDocument_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model_asserter.ModelAsserter;
-import com.hurynovich.data_unit_schema_service.utils.MassProcessingUtils;
 import org.junit.jupiter.api.Assertions;
 
-import java.util.List;
 import java.util.Set;
 
 public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiModel, DataUnitSchemaServiceModel, DataUnitSchemaPersistentModel> {
@@ -92,27 +85,9 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
         if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.NAME)) {
             Assertions.assertEquals(expected.name(), actual.name());
         }
-
-        if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.PROPERTY_SCHEMAS)) {
-            final List<DataUnitPropertySchemaWrapper> expectedPropertySchemas = expected.propertySchemas();
-            final List<DataUnitPropertySchemaWrapper> actualPropertySchemas = actual.propertySchemas();
-            Assertions.assertEquals(expectedPropertySchemas.size(), actualPropertySchemas.size());
-
-            for (int i = 0; i < expectedPropertySchemas.size(); i++) {
-                final DataUnitPropertySchemaWrapper expectedPropertySchema = expectedPropertySchemas.get(i);
-                final DataUnitPropertySchemaWrapper actualPropertySchema = actualPropertySchemas.get(i);
-                if (!ignorePropertiesSet.contains(DataUnitPropertySchemaDocument_.ID)) {
-                    Assertions.assertEquals(expectedPropertySchema.id(), actualPropertySchema.id());
-                }
-
-                Assertions.assertEquals(expectedPropertySchema.name(), actualPropertySchema.name());
-                Assertions.assertEquals(expectedPropertySchema.type(), actualPropertySchema.type());
-            }
-        }
     }
 
-    private record DataUnitSchemaWrapper(String id, String name,
-                                         List<DataUnitPropertySchemaWrapper> propertySchemas) {
+    private record DataUnitSchemaWrapper(String id, String name) {
 
         public static DataUnitSchemaWrapper of(final DataUnitSchemaApiModel schema,
                                                final String... ignoreProperties) {
@@ -131,15 +106,7 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
                 name = null;
             }
 
-            final List<DataUnitPropertySchemaWrapper> propertySchemas;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.PROPERTY_SCHEMAS)) {
-                propertySchemas = MassProcessingUtils.processQuietly(schema.getPropertySchemas(),
-                        DataUnitPropertySchemaWrapper::of);
-            } else {
-                propertySchemas = List.of();
-            }
-
-            return new DataUnitSchemaWrapper(id, name, propertySchemas);
+            return new DataUnitSchemaWrapper(id, name);
         }
 
         public static DataUnitSchemaWrapper of(final DataUnitSchemaServiceModel schema,
@@ -159,15 +126,7 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
                 name = null;
             }
 
-            final List<DataUnitPropertySchemaWrapper> propertySchemas;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.PROPERTY_SCHEMAS)) {
-                propertySchemas = MassProcessingUtils.processQuietly(schema.getPropertySchemas(),
-                        DataUnitPropertySchemaWrapper::of);
-            } else {
-                propertySchemas = List.of();
-            }
-
-            return new DataUnitSchemaWrapper(id, name, propertySchemas);
+            return new DataUnitSchemaWrapper(id, name);
         }
 
         public static DataUnitSchemaWrapper of(final DataUnitSchemaPersistentModel schema,
@@ -187,37 +146,7 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
                 name = null;
             }
 
-            final List<DataUnitPropertySchemaWrapper> propertySchemas;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.PROPERTY_SCHEMAS)) {
-                propertySchemas = MassProcessingUtils.processQuietly(schema.getPropertySchemas(),
-                        DataUnitPropertySchemaWrapper::of);
-            } else {
-                propertySchemas = List.of();
-            }
-
-            return new DataUnitSchemaWrapper(id, name, propertySchemas);
-        }
-    }
-
-    private record DataUnitPropertySchemaWrapper(String id, String name,
-                                                 DataUnitPropertyType type) {
-
-        public static DataUnitPropertySchemaWrapper of(final DataUnitPropertySchemaApiModel propertySchema,
-                                                       final String... ignoreProperties) {
-            return new DataUnitPropertySchemaWrapper(propertySchema.getId(), propertySchema.getName(),
-                    propertySchema.getType());
-        }
-
-        public static DataUnitPropertySchemaWrapper of(final DataUnitPropertySchemaServiceModel propertySchema,
-                                                       final String... ignoreProperties) {
-            return new DataUnitPropertySchemaWrapper(propertySchema.getId(), propertySchema.getName(),
-                    propertySchema.getType());
-        }
-
-        public static DataUnitPropertySchemaWrapper of(final DataUnitPropertySchemaPersistentModel propertySchema,
-                                                       final String... ignoreProperties) {
-            return new DataUnitPropertySchemaWrapper(propertySchema.getId(), propertySchema.getName(),
-                    propertySchema.getType());
+            return new DataUnitSchemaWrapper(id, name);
         }
     }
 }
