@@ -11,11 +11,12 @@ import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSche
 import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSchemaServiceModelGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 
 class DataUnitSchemaServiceConverterTest {
 
     private final ServiceConverter<DataUnitSchemaServiceModel, DataUnitSchemaPersistentModel> converter =
-            new DataUnitSchemaServiceConverter();
+            new DataUnitSchemaServiceConverter(new ModelMapper());
 
     private final ModelGenerator<DataUnitSchemaServiceModel> serviceModelGenerator =
             new DataUnitSchemaServiceModelGenerator();

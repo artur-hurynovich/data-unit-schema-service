@@ -30,6 +30,12 @@
 			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
 		<!-- https://github.com/artur-hurynovich/metamodel_generator -->
 		<dependency>
 			<groupId>com.hurynovich</groupId>
