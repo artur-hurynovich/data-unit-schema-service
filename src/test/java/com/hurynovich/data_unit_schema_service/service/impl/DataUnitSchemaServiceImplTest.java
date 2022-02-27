@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,12 +61,17 @@ class DataUnitSchemaServiceImplTest {
         Mockito.when(dao.save(persistentModel)).thenReturn(Mono.just(persistentModel));
         Mockito.when(converter.convert(persistentModel)).thenReturn(serviceModelGenerator.generate());
 
-        final DataUnitSchemaServiceModel savedSchema = service.save(serviceModel).block();
-        Assertions.assertNotNull(savedSchema);
+        StepVerifier
+                .create(service.save(serviceModel))
+                .assertNext(savedSchema -> {
+                    Assertions.assertNotNull(savedSchema);
 
-        schemaAsserter.assertEquals(serviceModel, savedSchema, DataUnitSchemaServiceModelImpl_.ID);
+                    schemaAsserter.assertEquals(serviceModel, savedSchema, DataUnitSchemaServiceModelImpl_.ID);
 
-        Assertions.assertNotNull(savedSchema.getId());
+                    Assertions.assertNotNull(savedSchema.getId());
+                })
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -76,10 +82,15 @@ class DataUnitSchemaServiceImplTest {
         Mockito.when(dao.save(persistentModel)).thenReturn(Mono.just(persistentModel));
         Mockito.when(converter.convert(persistentModel)).thenReturn(serviceModelGenerator.generate());
 
-        final DataUnitSchemaServiceModel savedSchema = service.save(serviceModel).block();
-        Assertions.assertNotNull(savedSchema);
+        StepVerifier
+                .create(service.save(serviceModel))
+                .assertNext(savedSchema -> {
+                    Assertions.assertNotNull(savedSchema);
 
-        schemaAsserter.assertEquals(serviceModel, savedSchema);
+                    schemaAsserter.assertEquals(serviceModel, savedSchema);
+                })
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -90,18 +101,24 @@ class DataUnitSchemaServiceImplTest {
         Mockito.when(dao.findById(id)).thenReturn(Mono.just(persistentModel));
         Mockito.when(converter.convert(persistentModel)).thenReturn(serviceModel);
 
-        final DataUnitSchemaServiceModel schema = service.findById(id).block();
-        Assertions.assertNotNull(schema);
+        StepVerifier
+                .create(service.findById(id))
+                .assertNext(schema -> {
+                    Assertions.assertNotNull(schema);
 
-        schemaAsserter.assertEquals(serviceModel, schema);
+                    schemaAsserter.assertEquals(serviceModel, schema);
+                })
+                .expectComplete()
+                .verify();
     }
 
     @Test
     void findByIdEmptyTest() {
         Mockito.when(dao.findById(DATA_UNIT_SCHEMA_ID_1)).thenReturn(Mono.justOrEmpty(Optional.empty()));
-        final DataUnitSchemaServiceModel schema = service.findById(DATA_UNIT_SCHEMA_ID_1).block();
-
-        Assertions.assertNull(schema);
+        StepVerifier
+                .create(service.findById(DATA_UNIT_SCHEMA_ID_1))
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -121,12 +138,17 @@ class DataUnitSchemaServiceImplTest {
         Mockito.when(converter.convert(existingSchemaPersistentModel2))
                 .thenReturn(existingSchemaServiceModel2);
 
-        final List<DataUnitSchemaServiceModel> schemas1 = service.findAll(params1).block();
-        Assertions.assertNotNull(schemas1);
-        Assertions.assertEquals(2, schemas1.size());
+        StepVerifier
+                .create(service.findAll(params1))
+                .assertNext(schemas -> {
+                    Assertions.assertNotNull(schemas);
+                    Assertions.assertEquals(2, schemas.size());
 
-        schemaAsserter.assertEquals(existingSchemaServiceModel1, schemas1.get(0));
-        schemaAsserter.assertEquals(existingSchemaServiceModel2, schemas1.get(1));
+                    schemaAsserter.assertEquals(existingSchemaServiceModel1, schemas.get(0));
+                    schemaAsserter.assertEquals(existingSchemaServiceModel2, schemas.get(1));
+                })
+                .expectComplete()
+                .verify();
 
         final PaginationParams params2 = new PaginationParams(2, 2);
         final DataUnitSchemaPersistentModel existingSchemaPersistentModel3 = existingSchemaPersistentModel.get(2);
@@ -135,9 +157,16 @@ class DataUnitSchemaServiceImplTest {
         Mockito.when(converter.convert(existingSchemaPersistentModel3))
                 .thenReturn(existingSchemaServiceModel3);
 
-        final List<DataUnitSchemaServiceModel> schemas2 = service.findAll(params2).block();
-        Assertions.assertNotNull(schemas2);
-        Assertions.assertEquals(1, schemas2.size());
+        StepVerifier
+                .create(service.findAll(params2))
+                .assertNext(schemas -> {
+                    Assertions.assertNotNull(schemas);
+                    Assertions.assertEquals(1, schemas.size());
+
+                    schemaAsserter.assertEquals(existingSchemaServiceModel3, schemas.get(0));
+                })
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -145,9 +174,14 @@ class DataUnitSchemaServiceImplTest {
         final PaginationParams params = new PaginationParams(0, 2);
         Mockito.when(dao.findAll(params)).thenReturn(Mono.just(List.of()));
 
-        final List<DataUnitSchemaServiceModel> schemas = service.findAll(params).block();
-        Assertions.assertNotNull(schemas);
-        Assertions.assertTrue(schemas.isEmpty());
+        StepVerifier
+                .create(service.findAll(params))
+                .assertNext(schemas -> {
+                    Assertions.assertNotNull(schemas);
+                    Assertions.assertTrue(schemas.isEmpty());
+                })
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -155,6 +189,9 @@ class DataUnitSchemaServiceImplTest {
         final String id = serviceModelGenerator.generate().getId();
         Mockito.when(dao.deleteById(id)).thenReturn(Mono.empty());
 
-        Assertions.assertNull(service.deleteById(id).block());
+        StepVerifier
+                .create(service.deleteById(id))
+                .expectComplete()
+                .verify();
     }
 }
