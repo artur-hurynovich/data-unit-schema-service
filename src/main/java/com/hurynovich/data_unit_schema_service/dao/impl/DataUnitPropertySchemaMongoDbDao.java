@@ -2,7 +2,6 @@ package com.hurynovich.data_unit_schema_service.dao.impl;
 
 import com.hurynovich.data_unit_schema_service.dao.AbstractBaseDao;
 import com.hurynovich.data_unit_schema_service.dao.DataUnitPropertySchemaDao;
-import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaDocument;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaDocument_;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
@@ -25,12 +24,9 @@ public class DataUnitPropertySchemaMongoDbDao extends AbstractBaseDao<DataUnitPr
     }
 
     @Override
-    public Mono<List<DataUnitPropertySchemaPersistentModel>> findAllBySchemaId(@NonNull final PaginationParams params,
-                                                                               @NonNull final String schemaId) {
+    public Mono<List<DataUnitPropertySchemaPersistentModel>> findAllBySchemaId(@NonNull final String schemaId) {
         final Query query = new Query()
-                .addCriteria(Criteria.where(DataUnitPropertySchemaDocument_.SCHEMA_ID).is(schemaId))
-                .skip(params.offset())
-                .limit(params.limit());
+                .addCriteria(Criteria.where(DataUnitPropertySchemaDocument_.SCHEMA_ID).is(schemaId));
 
         return template
                 .find(query, DataUnitPropertySchemaDocument.class)
