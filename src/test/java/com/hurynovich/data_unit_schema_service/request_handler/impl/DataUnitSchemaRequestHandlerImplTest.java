@@ -92,7 +92,7 @@ class DataUnitSchemaRequestHandlerImplTest {
         Mockito.when(request.uri()).thenReturn(URI.create(URI_PREFIX));
 
         StepVerifier
-                .create(requestHandler.postSchema(request))
+                .create(requestHandler.post(request))
                 .assertNext(response -> {
                     Assertions.assertNotNull(response);
                     Assertions.assertEquals(HttpStatus.CREATED, response.statusCode());
@@ -117,7 +117,7 @@ class DataUnitSchemaRequestHandlerImplTest {
         Mockito.when(converter.convert(serviceModel)).thenReturn(apiModel);
 
         StepVerifier
-                .create(requestHandler.getSchemaById(request))
+                .create(requestHandler.getById(request))
                 .assertNext(response -> {
                     Assertions.assertNotNull(response);
                     Assertions.assertEquals(HttpStatus.OK, response.statusCode());
@@ -151,7 +151,7 @@ class DataUnitSchemaRequestHandlerImplTest {
         Mockito.when(paginator.buildPage(apiModels, 10L, params)).thenReturn(page);
 
         StepVerifier
-                .create(requestHandler.getAllSchemas(request))
+                .create(requestHandler.getAll(request))
                 .assertNext(response -> {
                     Assertions.assertNotNull(response);
                     final GenericPage<DataUnitSchemaApiModel> responsePage = extractGenericPageResponseBody(response);
@@ -181,7 +181,7 @@ class DataUnitSchemaRequestHandlerImplTest {
         Mockito.when(service.save(serviceModel)).thenReturn(Mono.just(serviceModel));
 
         StepVerifier
-                .create(requestHandler.putSchema(request))
+                .create(requestHandler.put(request))
                 .assertNext(response -> {
                     Assertions.assertNotNull(response);
                     Assertions.assertEquals(HttpStatus.OK, response.statusCode());
