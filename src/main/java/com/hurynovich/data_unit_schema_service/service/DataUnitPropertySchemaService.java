@@ -6,13 +6,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface DataUnitPropertySchemaService {
-
-    Mono<DataUnitPropertySchemaServiceModel> save(@NonNull DataUnitPropertySchemaServiceModel schema);
-
-    Mono<DataUnitPropertySchemaServiceModel> findById(@NonNull String id);
+public interface DataUnitPropertySchemaService extends BaseService<DataUnitPropertySchemaServiceModel, String> {
 
     Mono<List<DataUnitPropertySchemaServiceModel>> findAllBySchemaId(@NonNull String schemaId);
-
-    Mono<DataUnitPropertySchemaServiceModel> deleteById(@NonNull String id);
 }
