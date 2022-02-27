@@ -32,6 +32,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URI;
 import java.util.List;
@@ -90,16 +91,21 @@ class DataUnitSchemaRequestHandlerImplTest {
         Mockito.when(service.save(serviceModel)).thenReturn(Mono.just(savedServiceModel));
         Mockito.when(request.uri()).thenReturn(URI.create(URI_PREFIX));
 
-        final ServerResponse response = requestHandler.postSchema(request).block();
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(HttpStatus.CREATED, response.statusCode());
-        Assertions.assertEquals(URI.create(URI_PREFIX + "/" + DATA_UNIT_SCHEMA_ID_1),
-                response.headers().getLocation());
+        StepVerifier
+                .create(requestHandler.postSchema(request))
+                .assertNext(response -> {
+                    Assertions.assertNotNull(response);
+                    Assertions.assertEquals(HttpStatus.CREATED, response.statusCode());
+                    Assertions.assertEquals(URI.create(URI_PREFIX + "/" + DATA_UNIT_SCHEMA_ID_1),
+                            response.headers().getLocation());
 
-        final DataUnitSchemaApiModel savedApiModel = extractSchemaResponseBody(response);
-        schemaAsserter.assertEquals(apiModel, savedApiModel, DataUnitSchemaApiModelImpl_.ID);
+                    final DataUnitSchemaApiModel savedApiModel = extractSchemaResponseBody(response);
+                    schemaAsserter.assertEquals(apiModel, savedApiModel, DataUnitSchemaApiModelImpl_.ID);
 
-        Assertions.assertNotNull(savedApiModel.getId());
+                    Assertions.assertNotNull(savedApiModel.getId());
+                })
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -110,11 +116,16 @@ class DataUnitSchemaRequestHandlerImplTest {
         final DataUnitSchemaApiModel apiModel = apiModelGenerator.generate();
         Mockito.when(converter.convert(serviceModel)).thenReturn(apiModel);
 
-        final ServerResponse response = requestHandler.getSchemaById(request).block();
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(HttpStatus.OK, response.statusCode());
+        StepVerifier
+                .create(requestHandler.getSchemaById(request))
+                .assertNext(response -> {
+                    Assertions.assertNotNull(response);
+                    Assertions.assertEquals(HttpStatus.OK, response.statusCode());
 
-        schemaAsserter.assertEquals(apiModel, extractSchemaResponseBody(response));
+                    schemaAsserter.assertEquals(apiModel, extractSchemaResponseBody(response));
+                })
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -139,21 +150,26 @@ class DataUnitSchemaRequestHandlerImplTest {
                 .build();
         Mockito.when(paginator.buildPage(apiModels, 10L, params)).thenReturn(page);
 
-        final ServerResponse response = requestHandler.getAllSchemas(request).block();
-        Assertions.assertNotNull(response);
-        final GenericPage<DataUnitSchemaApiModel> responsePage = extractGenericPageResponseBody(response);
-        Assertions.assertNotNull(responsePage);
+        StepVerifier
+                .create(requestHandler.getAllSchemas(request))
+                .assertNext(response -> {
+                    Assertions.assertNotNull(response);
+                    final GenericPage<DataUnitSchemaApiModel> responsePage = extractGenericPageResponseBody(response);
+                    Assertions.assertNotNull(responsePage);
 
-        final List<DataUnitSchemaApiModel> expectedSchemas = page.getElements();
-        final List<DataUnitSchemaApiModel> actualSchemas = responsePage.getElements();
-        Assertions.assertEquals(expectedSchemas.size(), actualSchemas.size());
-        for (int i = 0; i < expectedSchemas.size(); i++) {
-            schemaAsserter.assertEquals(expectedSchemas.get(i), actualSchemas.get(i));
-        }
+                    final List<DataUnitSchemaApiModel> expectedSchemas = page.getElements();
+                    final List<DataUnitSchemaApiModel> actualSchemas = responsePage.getElements();
+                    Assertions.assertEquals(expectedSchemas.size(), actualSchemas.size());
+                    for (int i = 0; i < expectedSchemas.size(); i++) {
+                        schemaAsserter.assertEquals(expectedSchemas.get(i), actualSchemas.get(i));
+                    }
 
-        Assertions.assertEquals(page.getTotalElementsCount(), responsePage.getTotalElementsCount());
-        Assertions.assertEquals(page.getCurrentPageNumber(), responsePage.getCurrentPageNumber());
-        Assertions.assertEquals(page.getTotalPagesCount(), responsePage.getTotalPagesCount());
+                    Assertions.assertEquals(page.getTotalElementsCount(), responsePage.getTotalElementsCount());
+                    Assertions.assertEquals(page.getCurrentPageNumber(), responsePage.getCurrentPageNumber());
+                    Assertions.assertEquals(page.getTotalPagesCount(), responsePage.getTotalPagesCount());
+                })
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -164,11 +180,16 @@ class DataUnitSchemaRequestHandlerImplTest {
         Mockito.when(converter.convert(apiModel)).thenReturn(serviceModel);
         Mockito.when(service.save(serviceModel)).thenReturn(Mono.just(serviceModel));
 
-        final ServerResponse response = requestHandler.putSchema(request).block();
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(HttpStatus.OK, response.statusCode());
+        StepVerifier
+                .create(requestHandler.putSchema(request))
+                .assertNext(response -> {
+                    Assertions.assertNotNull(response);
+                    Assertions.assertEquals(HttpStatus.OK, response.statusCode());
 
-        schemaAsserter.assertEquals(apiModel, extractSchemaResponseBody(response));
+                    schemaAsserter.assertEquals(apiModel, extractSchemaResponseBody(response));
+                })
+                .expectComplete()
+                .verify();
     }
 
     private DataUnitSchemaApiModel extractSchemaResponseBody(final ServerResponse response) {
