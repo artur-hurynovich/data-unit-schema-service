@@ -1,7 +1,9 @@
 package com.hurynovich.data_unit_schema_service.model.data_unit_property_schema;
 
+import com.hurynovich.GenerateMetamodel;
 import com.hurynovich.data_unit_schema_service.model.DataUnitPropertyType;
 
+@GenerateMetamodel
 public record DataUnitPropertySchemaServiceModelImpl(String id, String name, DataUnitPropertyType type,
                                                      String schemaId)
         implements DataUnitPropertySchemaServiceModel {

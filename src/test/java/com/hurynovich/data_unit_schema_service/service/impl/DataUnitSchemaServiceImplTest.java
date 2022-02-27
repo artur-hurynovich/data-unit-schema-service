@@ -53,7 +53,7 @@ class DataUnitSchemaServiceImplTest {
     }
 
     @Test
-    void saveNewSchemaTest() {
+    void saveNewTest() {
         final DataUnitSchemaServiceModel serviceModel = serviceModelGenerator.generateWithNullId();
         final DataUnitSchemaPersistentModel persistentModel = persistentModelGenerator.generateWithNullId();
         Mockito.when(converter.convert(serviceModel)).thenReturn(persistentModel);
@@ -69,7 +69,7 @@ class DataUnitSchemaServiceImplTest {
     }
 
     @Test
-    void updateExistingSchemaTest() {
+    void updateExistingTest() {
         final DataUnitSchemaServiceModel serviceModel = serviceModelGenerator.generate();
         final DataUnitSchemaPersistentModel persistentModel = persistentModelGenerator.generate();
         Mockito.when(converter.convert(serviceModel)).thenReturn(persistentModel);
