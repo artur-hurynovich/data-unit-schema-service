@@ -5,25 +5,39 @@ import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.D
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaServiceModelImpl;
-import org.modelmapper.ModelMapper;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DataUnitPropertySchemaServiceConverter extends AbstractConverter
+public class DataUnitPropertySchemaServiceConverter
         implements ServiceConverter<DataUnitPropertySchemaServiceModel, DataUnitPropertySchemaPersistentModel> {
-
-    public DataUnitPropertySchemaServiceConverter(final ModelMapper mapper) {
-        super(mapper);
-    }
 
     @Override
     public DataUnitPropertySchemaPersistentModel convert(@Nullable final DataUnitPropertySchemaServiceModel source) {
-        return convert(source, DataUnitPropertySchemaDocument.class);
+        final DataUnitPropertySchemaDocument target;
+        if (source != null) {
+            target = new DataUnitPropertySchemaDocument();
+            target.setId(source.getId());
+            target.setName(source.getName());
+            target.setType(source.getType());
+            target.setSchemaId(source.getSchemaId());
+        } else {
+            target = null;
+        }
+
+        return target;
     }
 
     @Override
     public DataUnitPropertySchemaServiceModel convert(@Nullable final DataUnitPropertySchemaPersistentModel source) {
-        return convert(source, DataUnitPropertySchemaServiceModelImpl.class);
+        final DataUnitPropertySchemaServiceModelImpl target;
+        if (source != null) {
+            target = new DataUnitPropertySchemaServiceModelImpl(source.getId(), source.getName(), source.getType(),
+                    source.getSchemaId());
+        } else {
+            target = null;
+        }
+
+        return target;
     }
 }

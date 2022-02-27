@@ -24,16 +24,4 @@ public class ModelConstants {
     public static final String DATA_UNIT_FLOAT_PROPERTY_SCHEMA_ID = "3333";
     public static final String DATA_UNIT_FLOAT_PROPERTY_SCHEMA_NAME = "Float Property Schema";
     public static final DataUnitPropertyType DATA_UNIT_FLOAT_PROPERTY_SCHEMA_TYPE = DataUnitPropertyType.FLOAT;
-
-    public static final String DATA_UNIT_BOOLEAN_PROPERTY_SCHEMA_ID = "4444";
-    public static final String DATA_UNIT_BOOLEAN_PROPERTY_SCHEMA_NAME = "Boolean Property Schema";
-    public static final DataUnitPropertyType DATA_UNIT_BOOLEAN_PROPERTY_SCHEMA_TYPE = DataUnitPropertyType.BOOLEAN;
-
-    public static final String DATA_UNIT_DATE_PROPERTY_SCHEMA_ID = "5555";
-    public static final String DATA_UNIT_DATE_PROPERTY_SCHEMA_NAME = "Date Property Schema";
-    public static final DataUnitPropertyType DATA_UNIT_DATE_PROPERTY_SCHEMA_TYPE = DataUnitPropertyType.DATE;
-
-    public static final String DATA_UNIT_TIME_PROPERTY_SCHEMA_ID = "6666";
-    public static final String DATA_UNIT_TIME_PROPERTY_SCHEMA_NAME = "Time Property Schema";
-    public static final DataUnitPropertyType DATA_UNIT_TIME_PROPERTY_SCHEMA_TYPE = DataUnitPropertyType.TIME;
 }

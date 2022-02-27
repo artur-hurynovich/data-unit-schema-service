@@ -15,63 +15,49 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
     public void assertEquals(final DataUnitSchemaPersistentModel expected,
                              final DataUnitSchemaPersistentModel actual,
                              final String... ignoreProperties) {
-        processAssertEquals(DataUnitSchemaWrapper.of(expected, ignoreProperties),
-                DataUnitSchemaWrapper.of(actual, ignoreProperties),
-                ignoreProperties);
+        processAssertEquals(DataUnitSchemaWrapper.of(expected), DataUnitSchemaWrapper.of(actual), ignoreProperties);
     }
 
     @Override
     public void assertEquals(final DataUnitSchemaServiceModel expected,
                              final DataUnitSchemaServiceModel actual,
                              final String... ignoreProperties) {
-        processAssertEquals(DataUnitSchemaWrapper.of(expected, ignoreProperties),
-                DataUnitSchemaWrapper.of(actual, ignoreProperties),
-                ignoreProperties);
+        processAssertEquals(DataUnitSchemaWrapper.of(expected), DataUnitSchemaWrapper.of(actual), ignoreProperties);
     }
 
     @Override
     public void assertEquals(final DataUnitSchemaApiModel expected,
                              final DataUnitSchemaApiModel actual,
                              final String... ignoreProperties) {
-        processAssertEquals(DataUnitSchemaWrapper.of(expected, ignoreProperties),
-                DataUnitSchemaWrapper.of(actual, ignoreProperties),
-                ignoreProperties);
+        processAssertEquals(DataUnitSchemaWrapper.of(expected), DataUnitSchemaWrapper.of(actual), ignoreProperties);
     }
 
     @Override
     public void assertEquals(final DataUnitSchemaApiModel expected,
                              final DataUnitSchemaServiceModel actual,
                              final String... ignoreProperties) {
-        processAssertEquals(DataUnitSchemaWrapper.of(expected, ignoreProperties),
-                DataUnitSchemaWrapper.of(actual, ignoreProperties),
-                ignoreProperties);
+        processAssertEquals(DataUnitSchemaWrapper.of(expected), DataUnitSchemaWrapper.of(actual), ignoreProperties);
     }
 
     @Override
     public void assertEquals(final DataUnitSchemaServiceModel expected,
                              final DataUnitSchemaApiModel actual,
                              final String... ignoreProperties) {
-        processAssertEquals(DataUnitSchemaWrapper.of(expected, ignoreProperties),
-                DataUnitSchemaWrapper.of(actual, ignoreProperties),
-                ignoreProperties);
+        processAssertEquals(DataUnitSchemaWrapper.of(expected), DataUnitSchemaWrapper.of(actual), ignoreProperties);
     }
 
     @Override
     public void assertEquals(final DataUnitSchemaServiceModel expected,
                              final DataUnitSchemaPersistentModel actual,
                              final String... ignoreProperties) {
-        processAssertEquals(DataUnitSchemaWrapper.of(expected, ignoreProperties),
-                DataUnitSchemaWrapper.of(actual, ignoreProperties),
-                ignoreProperties);
+        processAssertEquals(DataUnitSchemaWrapper.of(expected), DataUnitSchemaWrapper.of(actual), ignoreProperties);
     }
 
     @Override
     public void assertEquals(final DataUnitSchemaPersistentModel expected,
                              final DataUnitSchemaServiceModel actual,
                              final String... ignoreProperties) {
-        processAssertEquals(DataUnitSchemaWrapper.of(expected, ignoreProperties),
-                DataUnitSchemaWrapper.of(actual, ignoreProperties),
-                ignoreProperties);
+        processAssertEquals(DataUnitSchemaWrapper.of(expected), DataUnitSchemaWrapper.of(actual), ignoreProperties);
     }
 
     private void processAssertEquals(final DataUnitSchemaWrapper expected,
@@ -89,64 +75,16 @@ public class DataUnitSchemaAsserter implements ModelAsserter<DataUnitSchemaApiMo
 
     private record DataUnitSchemaWrapper(String id, String name) {
 
-        public static DataUnitSchemaWrapper of(final DataUnitSchemaApiModel schema,
-                                               final String... ignoreProperties) {
-            final Set<String> ignorePropertiesSet = Set.of(ignoreProperties);
-            final String id;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.ID)) {
-                id = schema.getId();
-            } else {
-                id = null;
-            }
-
-            final String name;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.NAME)) {
-                name = schema.getName();
-            } else {
-                name = null;
-            }
-
-            return new DataUnitSchemaWrapper(id, name);
+        public static DataUnitSchemaWrapper of(final DataUnitSchemaApiModel schema) {
+            return new DataUnitSchemaWrapper(schema.getId(), schema.getName());
         }
 
-        public static DataUnitSchemaWrapper of(final DataUnitSchemaServiceModel schema,
-                                               final String... ignoreProperties) {
-            final Set<String> ignorePropertiesSet = Set.of(ignoreProperties);
-            final String id;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.ID)) {
-                id = schema.getId();
-            } else {
-                id = null;
-            }
-
-            final String name;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.NAME)) {
-                name = schema.getName();
-            } else {
-                name = null;
-            }
-
-            return new DataUnitSchemaWrapper(id, name);
+        public static DataUnitSchemaWrapper of(final DataUnitSchemaServiceModel schema) {
+            return new DataUnitSchemaWrapper(schema.getId(), schema.getName());
         }
 
-        public static DataUnitSchemaWrapper of(final DataUnitSchemaPersistentModel schema,
-                                               final String... ignoreProperties) {
-            final Set<String> ignorePropertiesSet = Set.of(ignoreProperties);
-            final String id;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.ID)) {
-                id = schema.getId();
-            } else {
-                id = null;
-            }
-
-            final String name;
-            if (!ignorePropertiesSet.contains(DataUnitSchemaDocument_.NAME)) {
-                name = schema.getName();
-            } else {
-                name = null;
-            }
-
-            return new DataUnitSchemaWrapper(id, name);
+        public static DataUnitSchemaWrapper of(final DataUnitSchemaPersistentModel schema) {
+            return new DataUnitSchemaWrapper(schema.getId(), schema.getName());
         }
     }
 }

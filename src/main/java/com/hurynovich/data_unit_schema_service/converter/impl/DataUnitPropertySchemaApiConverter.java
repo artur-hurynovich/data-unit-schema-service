@@ -1,29 +1,40 @@
 package com.hurynovich.data_unit_schema_service.converter.impl;
 
-import com.hurynovich.data_unit_schema_service.converter.ServiceConverter;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaDocument;
-import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaPersistentModel;
+import com.hurynovich.data_unit_schema_service.converter.ApiConverter;
+import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaApiModel;
+import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaApiModelImpl;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_property_schema.DataUnitPropertySchemaServiceModelImpl;
-import org.modelmapper.ModelMapper;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DataUnitPropertySchemaApiConverter extends AbstractConverter
-        implements ServiceConverter<DataUnitPropertySchemaServiceModel, DataUnitPropertySchemaPersistentModel> {
+public class DataUnitPropertySchemaApiConverter
+        implements ApiConverter<DataUnitPropertySchemaApiModel, DataUnitPropertySchemaServiceModel> {
 
-    public DataUnitPropertySchemaApiConverter(final ModelMapper mapper) {
-        super(mapper);
+    @Override
+    public DataUnitPropertySchemaServiceModel convert(@Nullable final DataUnitPropertySchemaApiModel source) {
+        final DataUnitPropertySchemaServiceModelImpl target;
+        if (source != null) {
+            target = new DataUnitPropertySchemaServiceModelImpl(source.getId(), source.getName(), source.getType(),
+                    source.getSchemaId());
+        } else {
+            target = null;
+        }
+
+        return target;
     }
 
     @Override
-    public DataUnitPropertySchemaPersistentModel convert(@Nullable final DataUnitPropertySchemaServiceModel source) {
-        return convert(source, DataUnitPropertySchemaDocument.class);
-    }
+    public DataUnitPropertySchemaApiModel convert(@Nullable final DataUnitPropertySchemaServiceModel source) {
+        final DataUnitPropertySchemaApiModelImpl target;
+        if (source != null) {
+            target = new DataUnitPropertySchemaApiModelImpl(source.getId(), source.getName(), source.getType(),
+                    source.getSchemaId());
+        } else {
+            target = null;
+        }
 
-    @Override
-    public DataUnitPropertySchemaServiceModel convert(@Nullable final DataUnitPropertySchemaPersistentModel source) {
-        return convert(source, DataUnitPropertySchemaServiceModelImpl.class);
+        return target;
     }
 }
