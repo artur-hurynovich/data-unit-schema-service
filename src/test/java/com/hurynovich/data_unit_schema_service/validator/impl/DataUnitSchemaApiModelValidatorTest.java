@@ -29,8 +29,8 @@ class DataUnitSchemaApiModelValidatorTest {
                 DATA_UNIT_SCHEMA_VALID_NAME);
         final ValidationResult result = validator.validate(schema);
 
-        Assertions.assertEquals(ValidationResultType.SUCCESS, result.type());
-        Assertions.assertTrue(result.errors().isEmpty());
+        Assertions.assertEquals(ValidationResultType.SUCCESS, result.getType());
+        Assertions.assertTrue(result.getErrors().isEmpty());
     }
 
     @Test
@@ -38,9 +38,9 @@ class DataUnitSchemaApiModelValidatorTest {
         final DataUnitSchemaApiModelImpl schema = new DataUnitSchemaApiModelImpl(DATA_UNIT_SCHEMA_ID_1, null);
         final ValidationResult result = validator.validate(schema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
 
-        final List<String> errors = result.errors();
+        final List<String> errors = result.getErrors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'name' can't be null, empty or blank", errors.get(0));
     }
@@ -51,9 +51,9 @@ class DataUnitSchemaApiModelValidatorTest {
                 StringUtils.EMPTY);
         final ValidationResult result = validator.validate(schema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
 
-        final List<String> errors = result.errors();
+        final List<String> errors = result.getErrors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'name' can't be null, empty or blank", errors.get(0));
     }
@@ -64,9 +64,9 @@ class DataUnitSchemaApiModelValidatorTest {
                 StringUtils.SPACE);
         final ValidationResult result = validator.validate(schema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
 
-        final List<String> errors = result.errors();
+        final List<String> errors = result.getErrors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'name' can't be null, empty or blank", errors.get(0));
     }
@@ -77,9 +77,9 @@ class DataUnitSchemaApiModelValidatorTest {
                 DATA_UNIT_SCHEMA_NON_VALID_NAME);
         final ValidationResult result = validator.validate(schema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
 
-        final List<String> errors = result.errors();
+        final List<String> errors = result.getErrors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'name' length can't exceed " +
                 DATA_UNIT_SCHEMA_NAME_MAX_LENGTH + " characters", errors.get(0));

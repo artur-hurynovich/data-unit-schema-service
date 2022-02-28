@@ -8,8 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 class DataUnitSchemaApiModelValidator implements Validator<DataUnitSchemaApiModel> {
 
@@ -17,15 +15,14 @@ class DataUnitSchemaApiModelValidator implements Validator<DataUnitSchemaApiMode
 
     @Override
     public ValidationResult validate(@NonNull final DataUnitSchemaApiModel schema) {
-        final ValidationResult result;
+        final ValidationResult result = new ValidationResult();
         final String name = schema.getName();
         if (StringUtils.isBlank(name)) {
-            result = new ValidationResult(ValidationResultType.FAILURE, List.of("'name' can't be null, empty or blank"));
+            result.setType(ValidationResultType.FAILURE);
+            result.addError("'name' can't be null, empty or blank");
         } else if (name.length() > DATA_UNIT_SCHEMA_NAME_MAX_LENGTH) {
-            result = new ValidationResult(ValidationResultType.FAILURE, List.of("'name' length can't exceed " +
-                    DATA_UNIT_SCHEMA_NAME_MAX_LENGTH + " characters"));
-        } else {
-            result = new ValidationResult(ValidationResultType.SUCCESS, List.of());
+            result.setType(ValidationResultType.FAILURE);
+            result.addError("'name' length can't exceed " + DATA_UNIT_SCHEMA_NAME_MAX_LENGTH + " characters");
         }
 
         return result;
