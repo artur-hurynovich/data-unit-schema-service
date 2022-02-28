@@ -17,7 +17,8 @@ public abstract class AbstractBaseDao<T extends PersistentModel<I>, I extends Se
 
     protected final ReactiveMongoTemplate template;
 
-    public AbstractBaseDao(final Class<? extends T> modelClass, final ReactiveMongoTemplate template) {
+    public AbstractBaseDao(@NonNull final Class<? extends T> modelClass,
+                           @NonNull final ReactiveMongoTemplate template) {
         this.modelClass = modelClass;
         this.template = template;
     }

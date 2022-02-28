@@ -21,6 +21,9 @@ import com.hurynovich.data_unit_schema_service.paginator.model.impl.GenericPageB
 import com.hurynovich.data_unit_schema_service.request_handler.DataUnitSchemaRequestHandler;
 import com.hurynovich.data_unit_schema_service.service.DataUnitSchemaService;
 import com.hurynovich.data_unit_schema_service.utils.ServerResponseUtils;
+import com.hurynovich.data_unit_schema_service.validator.Validator;
+import com.hurynovich.data_unit_schema_service.validator.model.ValidationResult;
+import com.hurynovich.data_unit_schema_service.validator.model.ValidationResultType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +44,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_SCHEMA_ID_1;
+import static com.hurynovich.data_unit_schema_service.model_generator.ModelConstants.DATA_UNIT_SCHEMA_ID_2;
 
 @ExtendWith(MockitoExtension.class)
 class DataUnitSchemaRequestHandlerImplTest {
@@ -50,6 +54,8 @@ class DataUnitSchemaRequestHandlerImplTest {
     private static final String PAGE_NUMBER_REQUEST_PARAM = "pageNumber";
 
     private static final int DATA_UNIT_SCHEMAS_PER_PAGE = 20;
+
+    private static final String TEST_ERROR = "error";
 
     private final ModelGenerator<DataUnitSchemaApiModel> apiModelGenerator =
             new DataUnitSchemaApiModelGenerator();
@@ -61,6 +67,9 @@ class DataUnitSchemaRequestHandlerImplTest {
             new DataUnitSchemaAsserter();
 
     private final ObjectMapper mapper = new ObjectMapper();
+
+    @Mock
+    private Validator<DataUnitSchemaApiModel> validator;
 
     @Mock
     private DataUnitSchemaService service;
@@ -78,13 +87,14 @@ class DataUnitSchemaRequestHandlerImplTest {
 
     @BeforeEach
     public void initRequestHandler() {
-        handler = new DataUnitSchemaRequestHandlerImpl(service, converter, paginator);
+        handler = new DataUnitSchemaRequestHandlerImpl(validator, service, converter, paginator);
     }
 
     @Test
     void postTest() {
         final DataUnitSchemaApiModel apiModel = apiModelGenerator.generateWithNullId();
         Mockito.when(request.bodyToMono(DataUnitSchemaApiModel.class)).thenReturn(Mono.just(apiModel));
+        Mockito.when(validator.validate(apiModel)).thenReturn(new ValidationResult());
         final DataUnitSchemaServiceModel serviceModel = serviceModelGenerator.generateWithNullId();
         Mockito.when(converter.convert(apiModel)).thenReturn(serviceModel);
         final DataUnitSchemaServiceModel savedServiceModel = serviceModelGenerator.generate();
@@ -103,6 +113,44 @@ class DataUnitSchemaRequestHandlerImplTest {
                     asserter.assertEquals(apiModel, savedApiModel, DataUnitSchemaApiModelImpl_.ID);
 
                     Assertions.assertNotNull(savedApiModel.getId());
+                })
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void postNotNullIdTest() {
+        Mockito.when(request.bodyToMono(DataUnitSchemaApiModel.class))
+                .thenReturn(Mono.just(apiModelGenerator.generate()));
+
+        StepVerifier
+                .create(handler.post(request))
+                .assertNext(response -> {
+                    Assertions.assertNotNull(response);
+                    Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.statusCode());
+                    Assertions.assertEquals(List.of("\"'id' should be null\"").toString(),
+                            ServerResponseUtils.extractResponseBody(response));
+                })
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void postNotValidTest() {
+        final DataUnitSchemaApiModel apiModel = apiModelGenerator.generateWithNullId();
+        Mockito.when(request.bodyToMono(DataUnitSchemaApiModel.class)).thenReturn(Mono.just(apiModel));
+        final ValidationResult result = new ValidationResult();
+        result.setType(ValidationResultType.FAILURE);
+        result.addError(TEST_ERROR);
+        Mockito.when(validator.validate(apiModel)).thenReturn(result);
+
+        StepVerifier
+                .create(handler.post(request))
+                .assertNext(response -> {
+                    Assertions.assertNotNull(response);
+                    Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.statusCode());
+                    Assertions.assertEquals(List.of("\"" + TEST_ERROR + "\"").toString(),
+                            ServerResponseUtils.extractResponseBody(response));
                 })
                 .expectComplete()
                 .verify();
@@ -176,6 +224,8 @@ class DataUnitSchemaRequestHandlerImplTest {
     public void putTest() {
         final DataUnitSchemaApiModel apiModel = apiModelGenerator.generate();
         Mockito.when(request.bodyToMono(DataUnitSchemaApiModel.class)).thenReturn(Mono.just(apiModel));
+        Mockito.when(request.pathVariable(DataUnitSchemaApiModelImpl_.ID)).thenReturn(DATA_UNIT_SCHEMA_ID_1);
+        Mockito.when(validator.validate(apiModel)).thenReturn(new ValidationResult());
         final DataUnitSchemaServiceModel serviceModel = serviceModelGenerator.generate();
         Mockito.when(converter.convert(apiModel)).thenReturn(serviceModel);
         Mockito.when(service.save(serviceModel)).thenReturn(Mono.just(serviceModel));
@@ -187,6 +237,63 @@ class DataUnitSchemaRequestHandlerImplTest {
                     Assertions.assertEquals(HttpStatus.OK, response.statusCode());
 
                     asserter.assertEquals(apiModel, extractSchemaResponseBody(response));
+                })
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void putNullIdTest() {
+        final DataUnitSchemaApiModel apiModel = apiModelGenerator.generateWithNullId();
+        Mockito.when(request.bodyToMono(DataUnitSchemaApiModel.class)).thenReturn(Mono.just(apiModel));
+
+        StepVerifier
+                .create(handler.put(request))
+                .assertNext(response -> {
+                    Assertions.assertNotNull(response);
+                    Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.statusCode());
+                    Assertions.assertEquals(List.of("\"'id' can't be null\"").toString(),
+                            ServerResponseUtils.extractResponseBody(response));
+                })
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void putIdNotEqualToPathVariableTest() {
+        final DataUnitSchemaApiModel apiModel = apiModelGenerator.generate();
+        Mockito.when(request.bodyToMono(DataUnitSchemaApiModel.class)).thenReturn(Mono.just(apiModel));
+        Mockito.when(request.pathVariable(DataUnitSchemaApiModelImpl_.ID)).thenReturn(DATA_UNIT_SCHEMA_ID_2);
+
+        StepVerifier
+                .create(handler.put(request))
+                .assertNext(response -> {
+                    Assertions.assertNotNull(response);
+                    Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.statusCode());
+                    Assertions.assertEquals(List.of("\"'id' should be equal to path variable\"").toString(),
+                            ServerResponseUtils.extractResponseBody(response));
+                })
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void putNotValidTest() {
+        final DataUnitSchemaApiModel apiModel = apiModelGenerator.generate();
+        Mockito.when(request.bodyToMono(DataUnitSchemaApiModel.class)).thenReturn(Mono.just(apiModel));
+        Mockito.when(request.pathVariable(DataUnitSchemaApiModelImpl_.ID)).thenReturn(DATA_UNIT_SCHEMA_ID_1);
+        final ValidationResult result = new ValidationResult();
+        result.setType(ValidationResultType.FAILURE);
+        result.addError(TEST_ERROR);
+        Mockito.when(validator.validate(apiModel)).thenReturn(result);
+
+        StepVerifier
+                .create(handler.put(request))
+                .assertNext(response -> {
+                    Assertions.assertNotNull(response);
+                    Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.statusCode());
+                    Assertions.assertEquals(List.of("\"" + TEST_ERROR + "\"").toString(),
+                            ServerResponseUtils.extractResponseBody(response));
                 })
                 .expectComplete()
                 .verify();

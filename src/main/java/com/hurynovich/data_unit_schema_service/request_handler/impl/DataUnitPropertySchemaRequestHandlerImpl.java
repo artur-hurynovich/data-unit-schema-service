@@ -8,6 +8,7 @@ import com.hurynovich.data_unit_schema_service.request_handler.AbstractBaseReque
 import com.hurynovich.data_unit_schema_service.request_handler.DataUnitPropertySchemaRequestHandler;
 import com.hurynovich.data_unit_schema_service.service.DataUnitPropertySchemaService;
 import com.hurynovich.data_unit_schema_service.utils.MassProcessingUtils;
+import com.hurynovich.data_unit_schema_service.validator.Validator;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -23,9 +24,10 @@ public class DataUnitPropertySchemaRequestHandlerImpl
 
     private final ApiConverter<DataUnitPropertySchemaApiModel, DataUnitPropertySchemaServiceModel> converter;
 
-    public DataUnitPropertySchemaRequestHandlerImpl(@NonNull final DataUnitPropertySchemaService service,
+    public DataUnitPropertySchemaRequestHandlerImpl(@NonNull final Validator<DataUnitPropertySchemaApiModel> validator,
+                                                    @NonNull final DataUnitPropertySchemaService service,
                                                     @NonNull final ApiConverter<DataUnitPropertySchemaApiModel, DataUnitPropertySchemaServiceModel> converter) {
-        super(service, converter);
+        super(validator, service, converter);
 
         this.service = service;
         this.converter = converter;
