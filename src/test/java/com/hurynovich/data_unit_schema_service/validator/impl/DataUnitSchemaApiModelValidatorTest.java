@@ -2,6 +2,8 @@ package com.hurynovich.data_unit_schema_service.validator.impl;
 
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModelImpl;
+import com.hurynovich.data_unit_schema_service.model_generator.ModelGenerator;
+import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSchemaApiModelGenerator;
 import com.hurynovich.data_unit_schema_service.validator.Validator;
 import com.hurynovich.data_unit_schema_service.validator.model.ValidationResult;
 import com.hurynovich.data_unit_schema_service.validator.model.ValidationResultType;
@@ -17,17 +19,16 @@ class DataUnitSchemaApiModelValidatorTest {
 
     private static final int DATA_UNIT_SCHEMA_NAME_MAX_LENGTH = 20;
 
-    private static final String DATA_UNIT_SCHEMA_VALID_NAME = "Valid name";
-
     private static final String DATA_UNIT_SCHEMA_NON_VALID_NAME = "Non-valid data unit schema name";
+
+    private final ModelGenerator<DataUnitSchemaApiModel> schemaGenerator =
+            new DataUnitSchemaApiModelGenerator();
 
     private final Validator<DataUnitSchemaApiModel> validator = new DataUnitSchemaApiModelValidator();
 
     @Test
     void validateTest() {
-        final DataUnitSchemaApiModelImpl schema = new DataUnitSchemaApiModelImpl(DATA_UNIT_SCHEMA_ID_1,
-                DATA_UNIT_SCHEMA_VALID_NAME);
-        final ValidationResult result = validator.validate(schema);
+        final ValidationResult result = validator.validate(schemaGenerator.generate());
 
         Assertions.assertEquals(ValidationResultType.SUCCESS, result.getType());
         Assertions.assertTrue(result.getErrors().isEmpty());
@@ -81,7 +82,7 @@ class DataUnitSchemaApiModelValidatorTest {
 
         final List<String> errors = result.getErrors();
         Assertions.assertEquals(1, errors.size());
-        Assertions.assertEquals("'name' length can't exceed " +
-                DATA_UNIT_SCHEMA_NAME_MAX_LENGTH + " characters", errors.get(0));
+        Assertions.assertEquals("'name' length can't exceed " + DATA_UNIT_SCHEMA_NAME_MAX_LENGTH,
+                errors.get(0));
     }
 }
