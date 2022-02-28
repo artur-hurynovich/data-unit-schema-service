@@ -90,11 +90,11 @@ class PaginatorImplTest {
 
     private List<DataUnitSchemaApiModel> buildMockElements(final long totalElementsCount) {
         return LongStream.range(0, totalElementsCount)
-                .mapToObj(this::buildMockElement)
+                .mapToObj(id -> buildMockElement(String.valueOf(id)))
                 .toList();
     }
 
-    private DataUnitSchemaApiModel buildMockElement(final Long id) {
-        return new DataUnitSchemaApiModelImpl(id, "", List.of());
+    private DataUnitSchemaApiModel buildMockElement(final String id) {
+        return new DataUnitSchemaApiModelImpl(id, "");
     }
 }

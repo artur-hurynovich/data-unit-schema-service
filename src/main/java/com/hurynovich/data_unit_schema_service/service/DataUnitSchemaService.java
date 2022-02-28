@@ -7,15 +7,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface DataUnitSchemaService {
-
-    Mono<DataUnitSchemaServiceModel> save(@NonNull DataUnitSchemaServiceModel schema);
-
-    Mono<DataUnitSchemaServiceModel> findById(@NonNull Long id);
+public interface DataUnitSchemaService extends BaseService<DataUnitSchemaServiceModel, String> {
 
     Mono<List<DataUnitSchemaServiceModel>> findAll(@NonNull PaginationParams params);
-
-    Mono<Void> deleteById(@NonNull Long id);
 
     Mono<Long> count();
 }

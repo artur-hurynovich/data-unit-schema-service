@@ -4,12 +4,11 @@ import com.hurynovich.GenerateMetamodel;
 import com.hurynovich.data_unit_schema_service.model.DataUnitPropertyType;
 
 @GenerateMetamodel
-public record DataUnitPropertySchemaApiModelImpl(Long id, String name,
-                                                 DataUnitPropertyType type)
+public record DataUnitPropertySchemaApiModelImpl(String id, String name, DataUnitPropertyType type, String schemaId)
         implements DataUnitPropertySchemaApiModel {
 
     @Override
-    public Long getId() {
+    public String getId() {
         return id();
     }
 
@@ -21,5 +20,10 @@ public record DataUnitPropertySchemaApiModelImpl(Long id, String name,
     @Override
     public DataUnitPropertyType getType() {
         return type();
+    }
+
+    @Override
+    public String getSchemaId() {
+        return schemaId();
     }
 }

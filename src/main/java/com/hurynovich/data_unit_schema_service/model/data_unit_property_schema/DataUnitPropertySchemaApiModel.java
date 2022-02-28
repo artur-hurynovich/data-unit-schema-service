@@ -5,9 +5,11 @@ import com.hurynovich.data_unit_schema_service.model.ApiModel;
 import com.hurynovich.data_unit_schema_service.model.DataUnitPropertyType;
 
 @JsonDeserialize(as = DataUnitPropertySchemaApiModelImpl.class)
-public interface DataUnitPropertySchemaApiModel extends ApiModel<Long> {
+public interface DataUnitPropertySchemaApiModel extends ApiModel<String> {
 
     String getName();
 
     DataUnitPropertyType getType();
+
+    String getSchemaId();
 }

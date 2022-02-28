@@ -1,12 +1,15 @@
 package com.hurynovich.data_unit_schema_service.model.data_unit_property_schema;
 
+import com.hurynovich.GenerateMetamodel;
 import com.hurynovich.data_unit_schema_service.model.DataUnitPropertyType;
 
-public record DataUnitPropertySchemaServiceModelImpl(Long id, String name, DataUnitPropertyType type)
+@GenerateMetamodel
+public record DataUnitPropertySchemaServiceModelImpl(String id, String name, DataUnitPropertyType type,
+                                                     String schemaId)
         implements DataUnitPropertySchemaServiceModel {
 
     @Override
-    public Long getId() {
+    public String getId() {
         return id();
     }
 
@@ -18,5 +21,10 @@ public record DataUnitPropertySchemaServiceModelImpl(Long id, String name, DataU
     @Override
     public DataUnitPropertyType getType() {
         return type();
+    }
+
+    @Override
+    public String getSchemaId() {
+        return schemaId();
     }
 }

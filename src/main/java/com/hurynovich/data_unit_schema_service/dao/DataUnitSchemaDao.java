@@ -7,15 +7,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface DataUnitSchemaDao {
-
-    Mono<DataUnitSchemaPersistentModel> save(@NonNull DataUnitSchemaPersistentModel schema);
-
-    Mono<DataUnitSchemaPersistentModel> findById(@NonNull Long id);
+public interface DataUnitSchemaDao extends BaseDao<DataUnitSchemaPersistentModel, String> {
 
     Mono<List<DataUnitSchemaPersistentModel>> findAll(@NonNull PaginationParams params);
-
-    Mono<Void> deleteById(@NonNull Long id);
-
-    Mono<Long> count();
 }

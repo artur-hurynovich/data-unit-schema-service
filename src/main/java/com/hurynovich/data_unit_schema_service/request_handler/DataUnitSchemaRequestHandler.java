@@ -1,19 +1,15 @@
 package com.hurynovich.data_unit_schema_service.request_handler;
 
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
+import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-public interface DataUnitSchemaRequestHandler {
+public interface DataUnitSchemaRequestHandler
+        extends BaseRequestHandler<DataUnitSchemaApiModel, DataUnitSchemaServiceModel, String> {
 
-    Mono<ServerResponse> postSchema(@NonNull ServerRequest request);
-
-    Mono<ServerResponse> getSchemaById(@NonNull ServerRequest request);
-
-    Mono<ServerResponse> getAllSchemas(@NonNull ServerRequest request);
-
-    Mono<ServerResponse> putSchema(@NonNull ServerRequest request);
-
-    Mono<ServerResponse> deleteSchemaById(@NonNull ServerRequest request);
+    @NonNull
+    Mono<ServerResponse> getAll(@NonNull ServerRequest request);
 }
