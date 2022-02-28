@@ -9,6 +9,7 @@ import com.hurynovich.data_unit_schema_service.request_handler.AbstractBaseReque
 import com.hurynovich.data_unit_schema_service.request_handler.DataUnitSchemaRequestHandler;
 import com.hurynovich.data_unit_schema_service.service.DataUnitSchemaService;
 import com.hurynovich.data_unit_schema_service.utils.MassProcessingUtils;
+import com.hurynovich.data_unit_schema_service.validator.Validator;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -31,10 +32,11 @@ class DataUnitSchemaRequestHandlerImpl extends AbstractBaseRequestHandler<DataUn
 
     private final Paginator paginator;
 
-    public DataUnitSchemaRequestHandlerImpl(@NonNull final DataUnitSchemaService service,
+    public DataUnitSchemaRequestHandlerImpl(@NonNull final Validator<DataUnitSchemaApiModel> validator,
+                                            @NonNull final DataUnitSchemaService service,
                                             @NonNull final ApiConverter<DataUnitSchemaApiModel, DataUnitSchemaServiceModel> converter,
                                             @NonNull final Paginator paginator) {
-        super(service, converter);
+        super(validator, service, converter);
 
         this.service = service;
         this.converter = converter;
