@@ -16,7 +16,7 @@ public abstract class AbstractBaseService<T extends ServiceModel<I>, U extends P
 
     private final ServiceConverter<T, U> converter;
 
-    protected AbstractBaseService(final BaseDao<U, I> dao, final ServiceConverter<T, U> converter) {
+    protected AbstractBaseService(@NonNull final BaseDao<U, I> dao, @NonNull final ServiceConverter<T, U> converter) {
         this.dao = dao;
         this.converter = converter;
     }

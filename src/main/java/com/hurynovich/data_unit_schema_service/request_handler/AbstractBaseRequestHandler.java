@@ -21,7 +21,8 @@ public abstract class AbstractBaseRequestHandler<T extends ApiModel<I>, U extend
 
     private final ApiConverter<T, U> converter;
 
-    protected AbstractBaseRequestHandler(final BaseService<U, I> service, final ApiConverter<T, U> converter) {
+    protected AbstractBaseRequestHandler(@NonNull final BaseService<U, I> service,
+                                         @NonNull final ApiConverter<T, U> converter) {
         this.service = service;
         this.converter = converter;
     }

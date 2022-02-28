@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class DataUnitPropertySchemaMongoDbDao extends AbstractBaseDao<DataUnitPropertySchemaPersistentModel, String>
         implements DataUnitPropertySchemaDao {
 
-    public DataUnitPropertySchemaMongoDbDao(final ReactiveMongoTemplate template) {
+    public DataUnitPropertySchemaMongoDbDao(@NonNull final ReactiveMongoTemplate template) {
         super(DataUnitPropertySchemaPersistentModel.class, template);
     }
 
