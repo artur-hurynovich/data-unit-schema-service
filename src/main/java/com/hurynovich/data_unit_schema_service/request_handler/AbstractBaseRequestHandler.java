@@ -46,13 +46,13 @@ public abstract class AbstractBaseRequestHandler<T extends ApiModel<I>, U extend
                                 response = ServerResponse.badRequest().bodyValue(List.of("'id' should be null"));
                             } else {
                                 final ValidationResult result = validator.validate(schema);
-                                if (result.getType() == ValidationResultType.SUCCESS) {
+                                if (result.type() == ValidationResultType.SUCCESS) {
                                     response = service
                                             .save(converter.convert(schema))
                                             .flatMap(s -> ServerResponse.created(buildLocation(request, s))
                                                     .bodyValue(s));
                                 } else {
-                                    response = ServerResponse.badRequest().bodyValue(result.getErrors());
+                                    response = ServerResponse.badRequest().bodyValue(result.errors());
                                 }
                             }
 
@@ -96,14 +96,14 @@ public abstract class AbstractBaseRequestHandler<T extends ApiModel<I>, U extend
                                         .bodyValue(List.of("'id' should be equal to path variable"));
                             } else {
                                 final ValidationResult result = validator.validate(schema);
-                                if (result.getType() == ValidationResultType.SUCCESS) {
+                                if (result.type() == ValidationResultType.SUCCESS) {
                                     response = service
                                             .save(converter.convert(schema))
                                             .flatMap(s -> ServerResponse
                                                     .ok()
                                                     .bodyValue(s));
                                 } else {
-                                    response = ServerResponse.badRequest().bodyValue(result.getErrors());
+                                    response = ServerResponse.badRequest().bodyValue(result.errors());
                                 }
                             }
 

@@ -8,6 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 class DataUnitSchemaApiModelValidator extends AbstractValidator<DataUnitSchemaApiModel> {
 
@@ -15,14 +18,19 @@ class DataUnitSchemaApiModelValidator extends AbstractValidator<DataUnitSchemaAp
 
     @Override
     public ValidationResult validate(@NonNull final DataUnitSchemaApiModel schema) {
-        final ValidationResult result = new ValidationResult();
+        final List<String> errors = new ArrayList<>();
         final String name = schema.getName();
         if (StringUtils.isBlank(name)) {
-            result.setType(ValidationResultType.FAILURE);
-            result.addError(buildCantBeNullEmptyOrBlankError("name"));
+            errors.add(buildCantBeNullEmptyOrBlankError("name"));
         } else if (name.length() > DATA_UNIT_SCHEMA_NAME_MAX_LENGTH) {
-            result.setType(ValidationResultType.FAILURE);
-            result.addError(buildCantExceedMaxLengthError("name", DATA_UNIT_SCHEMA_NAME_MAX_LENGTH));
+            errors.add(buildCantExceedMaxLengthError("name", DATA_UNIT_SCHEMA_NAME_MAX_LENGTH));
+        }
+
+        final ValidationResult result;
+        if (errors.isEmpty()) {
+            result = new ValidationResult();
+        } else {
+            result = new ValidationResult(ValidationResultType.FAILURE, errors);
         }
 
         return result;

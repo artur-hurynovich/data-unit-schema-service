@@ -10,6 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class DataUnitPropertySchemaApiModelValidator extends AbstractValidator<DataUnitPropertySchemaApiModel> {
 
@@ -23,32 +26,34 @@ public class DataUnitPropertySchemaApiModelValidator extends AbstractValidator<D
 
     @Override
     public ValidationResult validate(@NonNull final DataUnitPropertySchemaApiModel propertySchema) {
-        final ValidationResult result = new ValidationResult();
+        final List<String> errors = new ArrayList<>();
         final String name = propertySchema.getName();
         if (StringUtils.isBlank(name)) {
-            result.setType(ValidationResultType.FAILURE);
-            result.addError(buildCantBeNullEmptyOrBlankError("name"));
+            errors.add(buildCantBeNullEmptyOrBlankError("name"));
         } else if (name.length() > DATA_UNIT_PROPERTY_SCHEMA_NAME_MAX_LENGTH) {
-            result.setType(ValidationResultType.FAILURE);
-            result.addError(buildCantExceedMaxLengthError("name",
+            errors.add(buildCantExceedMaxLengthError("name",
                     DATA_UNIT_PROPERTY_SCHEMA_NAME_MAX_LENGTH));
         }
 
         if (propertySchema.getType() == null) {
-            result.setType(ValidationResultType.FAILURE);
-            result.addError("'type' can't be null");
+            errors.add("'type' can't be null");
         }
 
         final String schemaId = propertySchema.getSchemaId();
         if (StringUtils.isBlank(schemaId)) {
-            result.setType(ValidationResultType.FAILURE);
-            result.addError(buildCantBeNullEmptyOrBlankError("schemaId"));
+            errors.add(buildCantBeNullEmptyOrBlankError("schemaId"));
         } else {
             final DataUnitSchemaServiceModel schema = schemaService.findById(schemaId).block();
             if (schema == null) {
-                result.setType(ValidationResultType.FAILURE);
-                result.addError("'schemaId' doesn't exist");
+                errors.add("'schemaId' doesn't exist");
             }
+        }
+
+        final ValidationResult result;
+        if (errors.isEmpty()) {
+            result = new ValidationResult();
+        } else {
+            result = new ValidationResult(ValidationResultType.FAILURE, errors);
         }
 
         return result;

@@ -139,9 +139,7 @@ class DataUnitSchemaRequestHandlerImplTest {
     void postNotValidTest() {
         final DataUnitSchemaApiModel apiModel = apiModelGenerator.generateWithNullId();
         Mockito.when(request.bodyToMono(DataUnitSchemaApiModel.class)).thenReturn(Mono.just(apiModel));
-        final ValidationResult result = new ValidationResult();
-        result.setType(ValidationResultType.FAILURE);
-        result.addError(TEST_ERROR);
+        final ValidationResult result = new ValidationResult(ValidationResultType.FAILURE, List.of(TEST_ERROR));
         Mockito.when(validator.validate(apiModel)).thenReturn(result);
 
         StepVerifier
@@ -282,9 +280,7 @@ class DataUnitSchemaRequestHandlerImplTest {
         final DataUnitSchemaApiModel apiModel = apiModelGenerator.generate();
         Mockito.when(request.bodyToMono(DataUnitSchemaApiModel.class)).thenReturn(Mono.just(apiModel));
         Mockito.when(request.pathVariable(DataUnitSchemaApiModelImpl_.ID)).thenReturn(DATA_UNIT_SCHEMA_ID_1);
-        final ValidationResult result = new ValidationResult();
-        result.setType(ValidationResultType.FAILURE);
-        result.addError(TEST_ERROR);
+        final ValidationResult result = new ValidationResult(ValidationResultType.FAILURE, List.of(TEST_ERROR));
         Mockito.when(validator.validate(apiModel)).thenReturn(result);
 
         StepVerifier

@@ -56,8 +56,8 @@ class DataUnitPropertySchemaApiModelValidatorTest {
 
         final ValidationResult result = validator.validate(propertySchemaGenerator.generate());
 
-        Assertions.assertEquals(ValidationResultType.SUCCESS, result.getType());
-        Assertions.assertTrue(result.getErrors().isEmpty());
+        Assertions.assertEquals(ValidationResultType.SUCCESS, result.type());
+        Assertions.assertTrue(result.errors().isEmpty());
     }
 
     @Test
@@ -69,9 +69,9 @@ class DataUnitPropertySchemaApiModelValidatorTest {
                         DataUnitPropertyType.TEXT, DATA_UNIT_SCHEMA_ID_1);
         final ValidationResult result = validator.validate(propertySchema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
 
-        final List<String> errors = result.getErrors();
+        final List<String> errors = result.errors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'name' can't be null, empty or blank", errors.get(0));
     }
@@ -85,9 +85,9 @@ class DataUnitPropertySchemaApiModelValidatorTest {
                         DataUnitPropertyType.TEXT, DATA_UNIT_SCHEMA_ID_1);
         final ValidationResult result = validator.validate(propertySchema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
 
-        final List<String> errors = result.getErrors();
+        final List<String> errors = result.errors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'name' can't be null, empty or blank", errors.get(0));
     }
@@ -101,9 +101,9 @@ class DataUnitPropertySchemaApiModelValidatorTest {
                         DataUnitPropertyType.TEXT, DATA_UNIT_SCHEMA_ID_1);
         final ValidationResult result = validator.validate(propertySchema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
 
-        final List<String> errors = result.getErrors();
+        final List<String> errors = result.errors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'name' can't be null, empty or blank", errors.get(0));
     }
@@ -117,9 +117,9 @@ class DataUnitPropertySchemaApiModelValidatorTest {
                         DATA_UNIT_PROPERTY_SCHEMA_NON_VALID_NAME, DataUnitPropertyType.TEXT, DATA_UNIT_SCHEMA_ID_1);
         final ValidationResult result = validator.validate(propertySchema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
 
-        final List<String> errors = result.getErrors();
+        final List<String> errors = result.errors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'name' length can't exceed " + DATA_UNIT_PROPERTY_SCHEMA_NAME_MAX_LENGTH,
                 errors.get(0));
@@ -134,9 +134,9 @@ class DataUnitPropertySchemaApiModelValidatorTest {
                         DATA_UNIT_TEXT_PROPERTY_SCHEMA_NAME, null, DATA_UNIT_SCHEMA_ID_1);
         final ValidationResult result = validator.validate(propertySchema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
 
-        final List<String> errors = result.getErrors();
+        final List<String> errors = result.errors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'type' can't be null", errors.get(0));
     }
@@ -148,9 +148,9 @@ class DataUnitPropertySchemaApiModelValidatorTest {
                         DATA_UNIT_TEXT_PROPERTY_SCHEMA_NAME, DataUnitPropertyType.TEXT, null);
         final ValidationResult result = validator.validate(propertySchema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
 
-        final List<String> errors = result.getErrors();
+        final List<String> errors = result.errors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'schemaId' can't be null, empty or blank", errors.get(0));
     }
@@ -164,9 +164,9 @@ class DataUnitPropertySchemaApiModelValidatorTest {
                         DATA_UNIT_TEXT_PROPERTY_SCHEMA_NAME, DataUnitPropertyType.TEXT, DATA_UNIT_SCHEMA_ID_1);
         final ValidationResult result = validator.validate(propertySchema);
 
-        Assertions.assertEquals(ValidationResultType.FAILURE, result.getType());
+        Assertions.assertEquals(ValidationResultType.FAILURE, result.type());
 
-        final List<String> errors = result.getErrors();
+        final List<String> errors = result.errors();
         Assertions.assertEquals(1, errors.size());
         Assertions.assertEquals("'schemaId' doesn't exist", errors.get(0));
     }
