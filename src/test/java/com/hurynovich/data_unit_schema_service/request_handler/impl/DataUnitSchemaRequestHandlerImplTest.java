@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hurynovich.data_unit_schema_service.converter.ApiConverter;
-import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModelImpl;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModelImpl_;
@@ -15,15 +14,17 @@ import com.hurynovich.data_unit_schema_service.model_asserter.impl.DataUnitSchem
 import com.hurynovich.data_unit_schema_service.model_generator.ModelGenerator;
 import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSchemaApiModelGenerator;
 import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSchemaServiceModelGenerator;
-import com.hurynovich.data_unit_schema_service.paginator.Paginator;
-import com.hurynovich.data_unit_schema_service.paginator.model.GenericPage;
-import com.hurynovich.data_unit_schema_service.paginator.model.impl.GenericPageBuilderImpl;
 import com.hurynovich.data_unit_schema_service.request_handler.DataUnitSchemaRequestHandler;
 import com.hurynovich.data_unit_schema_service.service.DataUnitSchemaService;
 import com.hurynovich.data_unit_schema_service.utils.ServerResponseUtils;
 import com.hurynovich.data_unit_schema_service.validator.Validator;
 import com.hurynovich.data_unit_schema_service.validator.model.ValidationResult;
 import com.hurynovich.data_unit_schema_service.validator.model.ValidationResultType;
+import com.hurynovich.paginator.GenericPage;
+import com.hurynovich.paginator.PaginationParams;
+import com.hurynovich.paginator.Paginator;
+import com.hurynovich.paginator.impl.GenericPageBuilderImpl;
+import com.hurynovich.paginator.impl.PaginationParamsImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -177,7 +178,7 @@ class DataUnitSchemaRequestHandlerImplTest {
     @Test
     public void getAllTest() {
         Mockito.when(request.queryParam(PAGE_NUMBER_REQUEST_PARAM)).thenReturn(Optional.of("1"));
-        final PaginationParams params = new PaginationParams(0, DATA_UNIT_SCHEMAS_PER_PAGE);
+        final PaginationParams params = new PaginationParamsImpl(0, DATA_UNIT_SCHEMAS_PER_PAGE);
         Mockito.when(paginator.buildParams(1, DATA_UNIT_SCHEMAS_PER_PAGE)).thenReturn(params);
         final List<DataUnitSchemaServiceModel> serviceModels = serviceModelGenerator.generateList();
         Mockito.when(service.findAll(params)).thenReturn(Mono.just(serviceModels));

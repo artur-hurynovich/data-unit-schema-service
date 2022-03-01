@@ -2,9 +2,9 @@ package com.hurynovich.data_unit_schema_service.dao.impl;
 
 import com.hurynovich.data_unit_schema_service.dao.AbstractBaseDao;
 import com.hurynovich.data_unit_schema_service.dao.DataUnitSchemaDao;
-import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaDocument;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
+import com.hurynovich.paginator.PaginationParams;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.lang.NonNull;
@@ -25,8 +25,8 @@ public class DataUnitSchemaMongoDbDao extends AbstractBaseDao<DataUnitSchemaPers
     @Override
     public Mono<List<DataUnitSchemaPersistentModel>> findAll(@NonNull final PaginationParams params) {
         final Query query = new Query()
-                .skip(params.offset())
-                .limit(params.limit());
+                .skip(params.getOffset())
+                .limit(params.getLimit());
 
         return template
                 .find(query, DataUnitSchemaDocument.class)

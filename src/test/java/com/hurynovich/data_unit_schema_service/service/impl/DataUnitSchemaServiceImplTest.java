@@ -2,7 +2,6 @@ package com.hurynovich.data_unit_schema_service.service.impl;
 
 import com.hurynovich.data_unit_schema_service.converter.ServiceConverter;
 import com.hurynovich.data_unit_schema_service.dao.DataUnitSchemaDao;
-import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
@@ -13,6 +12,8 @@ import com.hurynovich.data_unit_schema_service.model_generator.ModelGenerator;
 import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSchemaPersistentModelGenerator;
 import com.hurynovich.data_unit_schema_service.model_generator.impl.DataUnitSchemaServiceModelGenerator;
 import com.hurynovich.data_unit_schema_service.service.DataUnitSchemaService;
+import com.hurynovich.paginator.PaginationParams;
+import com.hurynovich.paginator.impl.PaginationParamsImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -126,7 +127,7 @@ class DataUnitSchemaServiceImplTest {
         final List<DataUnitSchemaServiceModel> existingSchemaServiceModels = serviceModelGenerator.generateList();
 
         final List<DataUnitSchemaPersistentModel> existingSchemaPersistentModel = persistentModelGenerator.generateList();
-        final PaginationParams params1 = new PaginationParams(0, 2);
+        final PaginationParams params1 = new PaginationParamsImpl(0, 2);
         final DataUnitSchemaPersistentModel existingSchemaPersistentModel1 = existingSchemaPersistentModel.get(0);
         final DataUnitSchemaPersistentModel existingSchemaPersistentModel2 = existingSchemaPersistentModel.get(1);
         Mockito.when(dao.findAll(params1)).thenReturn(
@@ -150,7 +151,7 @@ class DataUnitSchemaServiceImplTest {
                 .expectComplete()
                 .verify();
 
-        final PaginationParams params2 = new PaginationParams(2, 2);
+        final PaginationParams params2 = new PaginationParamsImpl(2, 2);
         final DataUnitSchemaPersistentModel existingSchemaPersistentModel3 = existingSchemaPersistentModel.get(2);
         Mockito.when(dao.findAll(params2)).thenReturn(Mono.just(List.of(existingSchemaPersistentModel3)));
         final DataUnitSchemaServiceModel existingSchemaServiceModel3 = existingSchemaServiceModels.get(0);
@@ -171,7 +172,7 @@ class DataUnitSchemaServiceImplTest {
 
     @Test
     void findAllEmptyTest() {
-        final PaginationParams params = new PaginationParams(0, 2);
+        final PaginationParams params = new PaginationParamsImpl(0, 2);
         Mockito.when(dao.findAll(params)).thenReturn(Mono.just(List.of()));
 
         StepVerifier

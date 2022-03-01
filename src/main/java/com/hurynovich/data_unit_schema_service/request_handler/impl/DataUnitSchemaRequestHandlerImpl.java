@@ -1,15 +1,15 @@
 package com.hurynovich.data_unit_schema_service.request_handler.impl;
 
 import com.hurynovich.data_unit_schema_service.converter.ApiConverter;
-import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaApiModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
-import com.hurynovich.data_unit_schema_service.paginator.Paginator;
 import com.hurynovich.data_unit_schema_service.request_handler.AbstractBaseRequestHandler;
 import com.hurynovich.data_unit_schema_service.request_handler.DataUnitSchemaRequestHandler;
 import com.hurynovich.data_unit_schema_service.service.DataUnitSchemaService;
 import com.hurynovich.data_unit_schema_service.utils.MassProcessingUtils;
 import com.hurynovich.data_unit_schema_service.validator.Validator;
+import com.hurynovich.paginator.PaginationParams;
+import com.hurynovich.paginator.Paginator;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;

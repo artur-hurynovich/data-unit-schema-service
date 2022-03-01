@@ -2,12 +2,12 @@ package com.hurynovich.data_unit_schema_service.service.impl;
 
 import com.hurynovich.data_unit_schema_service.converter.ServiceConverter;
 import com.hurynovich.data_unit_schema_service.dao.DataUnitSchemaDao;
-import com.hurynovich.data_unit_schema_service.dao.model.PaginationParams;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaPersistentModel;
 import com.hurynovich.data_unit_schema_service.model.data_unit_schema.DataUnitSchemaServiceModel;
 import com.hurynovich.data_unit_schema_service.service.AbstractBaseService;
 import com.hurynovich.data_unit_schema_service.service.DataUnitSchemaService;
 import com.hurynovich.data_unit_schema_service.utils.MassProcessingUtils;
+import com.hurynovich.paginator.PaginationParams;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
